@@ -5,17 +5,14 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Card, CardContent, Typography } from '@mui/material';
 
 const Carousel = ({ cards }) => {
-const settings = {
-    dots: false,
+  const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    centerMode: true,
-    variableWidth: true
-    };
+  };
   
 
   return (

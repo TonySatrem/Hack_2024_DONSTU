@@ -1,0 +1,12 @@
+.slick-slide {
+    opacity: 0.8; /* Прозрачность элементов по краям */
+    transition: opacity 0.3s ease;
+  }
+  
+  .slick-slide.slick-active {
+    opacity: 1; /* Увеличиваем прозрачность активного элемента */
+  }
+  
+  .slick-slide.slick-center {
+    transform: scale(1.2); /* Увеличиваем размер центрального элемента */
+  }
