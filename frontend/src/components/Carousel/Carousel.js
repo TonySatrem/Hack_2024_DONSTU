@@ -1,11 +1,12 @@
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { Card, CardContent, Typography } from '@mui/material';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';    
-import Button from '@mui/material/Button';
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Card, CardContent, Typography, Container } from "@mui/material";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Button from "@mui/material/Button";
+import "./Carousel.module.css";
 
 const Carousel = ({ cards }) => {
     const settings = {
@@ -14,33 +15,35 @@ const Carousel = ({ cards }) => {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
-        autoplay: true,
+        autoplay: false,
         autoplaySpeed: 2000,
-      };
-    
-      const sliderRef = React.useRef();
-    
-      const goToPrev = () => {
+    };
+
+    const sliderRef = React.useRef();
+
+    const goToPrev = () => {
         sliderRef.current.slickPrev();
-      };
-    
-      const goToNext = () => {
+    };
+
+    const goToNext = () => {
         sliderRef.current.slickNext();
-      };
-    
-      return (
-        <div>
-          <Slider ref={sliderRef} {...settings}>
-            {cards.map((card, index) => (
-              <div key={index}>
-              {card}
-              </div>
-            ))}
-          </Slider>
-          <Button onClick={goToPrev}><NavigateBeforeIcon /></Button>
-          <Button onClick={goToNext}><NavigateNextIcon /></Button>
-        </div>
-  );
+    };
+
+    return (
+        <Container maxWidth="md" sx={{ mx: "auto", width: "80%" }}>
+            <Slider ref={sliderRef} {...settings}>
+                {cards.map((card, index) => (
+                    <div  key={index}>{card}</div>
+                ))}
+            </Slider>
+            <Button onClick={goToPrev}>
+                <NavigateBeforeIcon />
+            </Button>
+            <Button onClick={goToNext}>
+                <NavigateNextIcon />
+            </Button>
+        </Container>
+    );
 };
 
 export default Carousel;
