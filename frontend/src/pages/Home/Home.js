@@ -12,9 +12,9 @@ const Home = () => {
   return (
     <div className="home">
       <Header />
-      <Container maxWidth="l">
+      <Container maxWidth="xl">
+        
         <Carousel cards={cards} />
-
       </Container>
     </div>
   );
