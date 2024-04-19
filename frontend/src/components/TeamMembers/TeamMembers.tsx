@@ -33,7 +33,7 @@ export default function TeamMembers() {
     return (
         <Container maxWidth="lg"    sx={{
             bgcolor: 'background.paper',
-            boxShadow: 1,
+            boxShadow: 10,
             borderRadius: 2,
             p: 2,
             minWidth: 300,
