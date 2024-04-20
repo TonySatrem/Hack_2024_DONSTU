@@ -9,6 +9,13 @@ export async function addParticipant({ fullName, teamId, info, photo, email }) {
         .insert({ fullName, teamId, info, photo, email }))[0]
 }
 
+export async function getAllByTeamId({ teamId }) {
+    return await table
+        .select('participantId')
+        .where({ teamId })
+        .then(r => r.map(i => i.participantId))
+}
+
 export async function getById({ participantId }) {
     return (await table
         .where({ participantId }))[0]

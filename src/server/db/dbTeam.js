@@ -19,6 +19,11 @@ export async function getByLogin({ login }) {
         .where({ login }))[0]
 }
 
+export async function getAll() {
+    return (await table
+        .select())
+}
+
 export async function deleteTeam({ teamId }) {
     await table
         .where({ teamId })
@@ -30,4 +35,3 @@ export async function changeBanner({ teamId, banner }) {
         .where({ teamId })
         .update({ banner })
 }
-

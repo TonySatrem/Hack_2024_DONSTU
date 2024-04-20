@@ -18,6 +18,24 @@ router.post('/add', async (req, res) => {
     }
 })
 
+router.get('/team', async (req, res) => {
+    res.send('alfj')
+    const teamId = req.params.teamId
+    
+    try {
+        const participants = await dbParticipant.getAllByTeamId({ teamId })
+        res.send(participants)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+
 router.get('/:id', async (req, res) => {
     const participantId = req.params.id
 

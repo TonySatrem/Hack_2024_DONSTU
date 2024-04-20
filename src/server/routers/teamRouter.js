@@ -3,6 +3,21 @@ import * as dbTeam from "../db/dbTeam.js"
 
 const router = express.Router()
 
+router.get('/', async (req, res) => {
+    try {
+        const teams = await dbTeam.getAll()
+        res.send(teams)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+
 router.post('/add', async (req, res) => {
     try {
         const teamId = await dbTeam.addTeam(req.body)
