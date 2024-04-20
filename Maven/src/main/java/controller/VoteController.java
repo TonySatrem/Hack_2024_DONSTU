@@ -18,9 +18,12 @@ public class VoteController {
     @PostMapping("/add")
     public boolean addVote(
             @RequestBody int teamId,
-            @RequestBody int votingId,
+            @RequestBody int vote,
             @RequestBody String voteType
     ) {
+        if (vote < 0 || vote > 10)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid vote");
+
         VoteType type;
         try {
             type = VoteType.valueOf(voteType);
@@ -33,7 +36,7 @@ public class VoteController {
         if (team == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team not found");
 
-        team.addVote(type);
+        team.addVote(type, vote);
 
         return true;
     }
