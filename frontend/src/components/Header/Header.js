@@ -38,37 +38,37 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar>
+      <Container maxWidth="xl" sx={{ p: 0 }}>
+        <Toolbar sx={{ p: 0 }} disableGutters>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 0 }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
+              aria-label="menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              sx={{ display: { xs: 'block', md: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
+            <Button component={Link} to={pages[0].path} color="inherit" sx={{ display: { xs: 'none', md: 'block' } }}>{pages[0].name}</Button>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: 'top',
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'right',
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+              sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
@@ -78,21 +78,9 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                component={Link}
-                to={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 0, color: 'white', display: 'block' }}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
+          <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ flexGrow: 0 }} disableGutters>
+          <Box sx={{ flexGrow: 0, m: 1 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
