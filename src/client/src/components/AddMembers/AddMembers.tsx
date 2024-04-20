@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -42,6 +44,12 @@ const MiniMemberCard = ({ member }: { member: Member }) => (
     </div>
 );
 
+const validationSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Неправильный формат email')
+        .required('Пожалуйста, введите адрес электронной почты'),
+});
+
 export default function AddMembers() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -60,23 +68,9 @@ export default function AddMembers() {
         setMembers([...members, newMember]);
     };
 
-    const handleChange = (index: number, field: string, value: string) => {
-        const newMembers = [...members];
-        newMembers[index][field] = value;
-        setMembers(newMembers);
-    };
-
-    const handleAvatarChange = (index: number, file: Blob) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const newMembers = [...members];
-            newMembers[index].avatar = reader.result as string;
-            setMembers(newMembers);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const handleSubmit = () => {
+    const handleSubmit = (values: Member) => {
+        // Выполняем любую логику перед отправкой формы, если необходимо
+        setMembers([...members, values]);
         setFormSubmitted(true);
     };
 
@@ -99,68 +93,73 @@ export default function AddMembers() {
                         {formSubmitted && members.map((member, index) => (
                             <MiniMemberCard key={index} member={member} />
                         ))}
-                        {!formSubmitted && members.map((member, index) => (
-                            <div key={index} style={{ marginBottom: '20px' }}>
-                                <TextField
-                                    id={`outlined-basic-${index}`}
-                                    label="ФИО"
-                                    variant="outlined"
-                                    value={member.fio}
-                                    onChange={(e) => handleChange(index, 'fio', e.target.value)}
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <TextField
-                                    id={`outlined-basic-${index}`}
-                                    label="Email"
-                                    variant="outlined"
-                                    value={member.email}
-                                    onChange={(e) => handleChange(index, 'email', e.target.value)}
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <TextField
-                                    id={`outlined-basic-${index}`}
-                                    label="Информация"
-                                    variant="outlined"
-                                    value={member.info}
-                                    onChange={(e) => handleChange(index, 'info', e.target.value)}
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <Button
-                                    variant="contained"
-                                    component="label"
-                                    style={{ backgroundColor: "#9747FF", color: "white", marginTop: '10px' }}
-                                >
-                                    Загрузить аватар
-                                    <input
-                                        type="file"
-                                        hidden
-                                        onChange={(e) => e.target.files && handleAvatarChange(index, e.target.files[0])}
-                                    />
-                                </Button>
-                            </div>
-                        ))}
                         {!formSubmitted && (
-                            <Button
-                                variant="contained"
-                                style={{ backgroundColor: "#9747FF", color: "white", marginTop: '20px' }}
-                                onClick={addMember}
-                                fullWidth
+                            <Formik
+                                initialValues={{ fio: '', email: '', info: '', avatar: '' }}
+                                onSubmit={handleSubmit}
+                                validationSchema={validationSchema}
                             >
-                                Добавить
-                            </Button>
-                        )}
-                        {!formSubmitted && (
-                            <Button
-                                variant="contained"
-                                style={{ backgroundColor: "#9747FF", color: "white", marginTop: '10px' }}
-                                onClick={handleSubmit}
-                                fullWidth
-                            >
-                                Отправить
-                            </Button>
+                                {({ errors, touched }) => (
+                                    <Form>
+                                        <Field
+                                            name="fio"
+                                            type="text"
+                                            label="ФИО"
+                                            variant="outlined"
+                                            fullWidth
+                                            margin="normal"
+                                            as={TextField}
+                                        />
+                                        <ErrorMessage name="fio" component="div" />
+
+                                        <Field
+                                            name="email"
+                                            type="email"
+                                            label="Email"
+                                            variant="outlined"
+                                            fullWidth
+                                            margin="normal"
+                                            as={TextField}
+                                        />
+                                        <ErrorMessage name="email" component="div" />
+
+                                        <Field
+                                            name="info"
+                                            type="text"
+                                            label="Информация"
+                                            variant="outlined"
+                                            fullWidth
+                                            margin="normal"
+                                            as={TextField}
+                                        />
+
+                                        <Button
+                                            variant="contained"
+                                            component="label"
+                                            style={{ backgroundColor: "#9747FF", color: "white", marginTop: '10px' }}
+                                        >
+                                            Загрузить аватар
+                                            <input
+                                                type="file"
+                                                hidden
+                                                onChange={(e) => {
+                                                    const file = e.target.files && e.target.files[0];
+                                                    // Обработка загрузки аватара
+                                                }}
+                                            />
+                                        </Button>
+
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            style={{ backgroundColor: "#9747FF", color: "white", marginTop: '20px' }}
+                                            fullWidth
+                                        >
+                                            Добавить
+                                        </Button>
+                                    </Form>
+                                )}
+                            </Formik>
                         )}
                     </DialogContent>
                 </Box>
