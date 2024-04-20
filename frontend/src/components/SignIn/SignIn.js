@@ -27,18 +27,18 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Header />
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "80vh",
+          }}
       >
         <Box
           sx={{
-            marginTop: 8,
+            mt: 2,
+            mb: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

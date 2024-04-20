@@ -82,20 +82,18 @@ const SignUp = () => {
   return (
     <Container component="main" maxWidth="xs" maxHeight="110vh">
       <CssBaseline />
-      <Header />
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "80vh",
-          mt: 10,
-          mb: "10px",
+          minHeight: "80vh",
         }}
       >
         <Box
           sx={{
-            marginTop: 8,
+            mt: 2,
+            mb: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

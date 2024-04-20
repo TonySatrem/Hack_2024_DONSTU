@@ -5,17 +5,19 @@ import Home from './pages/Home/Home';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/SignUp/SignUp';
 import PersonalAccount from "./pages/PersonalAccount/PersonalAccount";
+import Header from './components/Header/Header';
 
 function App() {
   return (
     <div className="App">
-          <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/personal" element={<PersonalAccount />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-          </Routes>
-    </div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/personal" element={<PersonalAccount />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </div>
   );
 }
 

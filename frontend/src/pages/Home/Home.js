@@ -7,6 +7,7 @@ import Card from "../../components/Card/Card";
 import {Container, Rating} from "@mui/material";
 import { Popup } from "../../components/Popup/Popup";
 import RatingPopup from "../../components/RatingPopup/RatingPopup";
+import styles from "./Home.module.css";
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false); // Состояние для открытия и закрытия попапа
@@ -20,8 +21,7 @@ const Home = () => {
     ));
 
     return (
-        <div className="home">
-            <Header />
+        <div className={styles.home}>
             <Container
                 maxWidth="xl"
                 sx={{

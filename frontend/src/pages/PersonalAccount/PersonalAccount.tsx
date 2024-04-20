@@ -6,7 +6,6 @@ import Header from "../../components/Header/Header";
 export default function PersonalAccount() {
     return (
         <>
-            <Header/>
             <br/>
             <br/>
             <br/>
