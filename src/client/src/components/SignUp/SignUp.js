@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
+import AddMembers from "../AddMembers/AddMembers";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -213,6 +214,8 @@ const SignUp = () => {
                 <Box sx={{ color: "red", marginLeft: 1, fontSize: '12px' }}>{formik.errors.banner}</Box>
 )}
             </Box>
+              <br/>
+              <AddMembers/>
 
             <Button
               type="submit"
