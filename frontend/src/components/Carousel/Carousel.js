@@ -39,6 +39,7 @@ const Carousel = ({ cards }) => {
       sx={{
         display: "flex",
         flexDirection: "row",
+        height: "100%",
       }}
     >
       <Button onClick={goToPrev}>
