@@ -40,9 +40,9 @@ export default function SignIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            border: '1px solid #ccc', // Линия границы
+            border: '1px solid rgba(0, 0, 0, 0.4)', // Линия границы
             borderRadius: '16px', // Радиус скругления
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Тень
+            boxShadow: '0px 0px 7px rgba(0, 0, 0, 0.3)', // Тень
             padding: '20px', // Дополнительный отступ внутри контейнера
           }}
         >
@@ -90,7 +90,7 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2"
+                <Link href="/signup" variant="body2"
                 sx={{ color: '#9747FF',
                        textDecoration: 'none' }}>
                   {"Регистрация"}
