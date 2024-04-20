@@ -1,4 +1,4 @@
 export default {
-    team: "team",
-    participant: "participant"
+    team: "Team",
+    participant: "Participant"
 }

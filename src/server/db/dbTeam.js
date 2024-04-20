@@ -3,9 +3,9 @@ import tables from "./enums/tables.js"
 
 const table = db.table(tables.team)
 
-export async function addTeam({ name, email, login, passsword, banner}) {
+export async function addTeam({ name, email, login, password, banner}) {
     await table
-        .insert({ name, email, login, passsword, banner})
+        .insert({ name, email, login, password, banner})
 }
 
 export async function getById({ id }) {

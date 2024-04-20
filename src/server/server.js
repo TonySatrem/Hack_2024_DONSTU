@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
+import teamRouter from "./routers/teamRouter.js"
 
 const app = express()
 
@@ -49,6 +50,8 @@ app.get(clientEndpoints, (req, res) => {
     res.end()
   }
 })
+
+app.use('/api/teams', teamRouter)
 
 const PORT = process.env.HTTP_PORT || 8080
 const HOSTNAME = process.env.HTTP_HOSTNAME || '127.0.0.1'
