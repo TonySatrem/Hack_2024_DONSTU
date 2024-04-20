@@ -9,6 +9,8 @@ import { Popup } from "../../components/Popup/Popup";
 import RatingPopup from "../../components/RatingPopup/RatingPopup";
 import styles from "./Home.module.css";
 
+
+
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false); // Состояние для открытия и закрытия попапа
 
@@ -33,6 +35,7 @@ const Home = () => {
             >
                 <Carousel cards={cards} />
             </Container>
+
             {/* Передаем состояние и функцию для изменения состояния в компонент Card */}
             {isOpen && <RatingPopup onClose={togglePopup} />}
         </div>
