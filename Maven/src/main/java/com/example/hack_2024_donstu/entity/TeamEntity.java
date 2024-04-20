@@ -2,7 +2,6 @@ package com.example.hack_2024_donstu.entity;
 
 import com.example.hack_2024_donstu.enums.VoteType;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 
 @Entity
@@ -25,19 +24,19 @@ public class TeamEntity {
     private byte[] banner;
 
     @ElementCollection
-    @Column(name = "designVotes_id", nullable = false)
+    @Column(name = "designVotes_f", nullable = false)
     private ArrayList<Integer> designVotes;
 
     @ElementCollection
-    @Column(name = "usabilityVotes_id", nullable = false)
+    @Column(name = "usabilityVotes_f", nullable = false)
     private ArrayList<Integer> usabilityVotes;
 
     @ElementCollection
-    @Column(name = "layoutVotes_id", nullable = false)
+    @Column(name = "layoutVotes_f", nullable = false)
     private ArrayList<Integer> layoutVotes;
 
     @ElementCollection
-    @Column(name = "realizationVotes_id", nullable = false)
+    @Column(name = "realizationVotes_f", nullable = false)
     private ArrayList<Integer> realizationVotes;
 
     public TeamEntity(Integer id, String name, String login, String password, byte[] banner) {
@@ -58,10 +57,6 @@ public class TeamEntity {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
