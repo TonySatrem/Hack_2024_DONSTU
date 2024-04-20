@@ -22,7 +22,10 @@ public class TeamEntity {
     private byte[] banner;
 
     @Column(name = "designVotes_id", nullable = false)
-    private Integer designVotes;
+    private Integer[] designVotes;
+
+    @Column(name = )
+    private Integer[]
 
     public TeamEntity(Integer id, String name, String login, String password, byte[] banner, Integer designVotes) {
         this.id = id;
