@@ -35,4 +35,39 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id
+
+    try {
+        dbTeam.deleteTeam(id)
+        res.sendStatus(200)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+
+router.put('/:id', async (req, res) => {
+    const id = req.params.id
+    const { banner } = req.body
+
+    try {
+        dbTeam.changeBanner({ id, banner })
+        res.sendStatus(200)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+
 export default router
