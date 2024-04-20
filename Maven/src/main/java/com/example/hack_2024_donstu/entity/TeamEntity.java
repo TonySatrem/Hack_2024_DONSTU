@@ -1,6 +1,6 @@
 package com.example.hack_2024_donstu.entity;
 
-import enums.VoteType;
+import com.example.hack_2024_donstu.enums.VoteType;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,10 +23,7 @@ public class TeamEntity {
     private byte[] banner;
 
     @Column(name = "designVotes_id", nullable = false)
-    private Integer[] designVotes;
-
-    @Column(name = )
-    private Integer[]
+    private Integer designVotes;
 
     @Column(name = "usabilityVotes_id", nullable = false)
     private Integer usabilityVotes;

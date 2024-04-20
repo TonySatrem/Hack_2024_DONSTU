@@ -1,12 +1,12 @@
-package controller;
+package com.example.hack_2024_donstu.controller;
 
-import enums.VoteType;
+import com.example.hack_2024_donstu.enums.VoteType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import entity.TeamEntity;
+import com.example.hack_2024_donstu.entity.TeamEntity;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-import repositories.TeamRepository;
+import com.example.hack_2024_donstu.repositories.TeamRepository;
 
 @RestController
 @RequestMapping("/api/votes")
