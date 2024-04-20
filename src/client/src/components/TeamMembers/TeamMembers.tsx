@@ -29,22 +29,31 @@ export default function TeamMembers() {
     const [users, setUsers] = useState([
         {
             id: 1,
-            name: 'Дарья',
+            fullName: 'Дарья',
+            info: 'Менеджер',
+            email: 'qPp2A@example.com',
+            teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
             isEditing: false,
         },
         {
             id: 2,
-            name: "Полина",
-            photo: 'https://i.pravatar.cc/300?img=1',
+            fullName: 'Дарья',
+            info: 'Менеджер',
+            email: 'qPp2A@example.com',
+            teamId: 1,
+            photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
             isEditing: false,
         },
         {
             id: 3,
-            name: 'Владлена',
-            photo: 'https://sun9-14.userapi.com/impg/PjvxhrE-VivbuRJqCJUxe2z8pvTg2009JwngxA/qyKabFkU6TE.jpg?size=1620x2160&quality=95&sign=bd6c5239cd8df7d87121a7535fe6a284&type=album',
+            fullName: 'Дарья',
+            info: 'Менеджер',
+            email: 'qPp2A@example.com',
+            teamId: 1,
+            photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
             isEditing: false,
-        }
+        },
     ]);
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -64,7 +73,10 @@ export default function TeamMembers() {
         // Add a new user to the users array
         const newUser = {
             id: users.length + 1, // Generate id for new user
-            name: 'Новый пользователь',
+            fullName: 'Новый пользователь',
+            info: '',
+            email: '',
+            teamId: 1,
             photo: 'https://www.example.com/default-photo.jpg', // You can set a default photo
             isEditing: false,
         };
@@ -125,8 +137,20 @@ export default function TeamMembers() {
                         <>
                             <TextField
                                 label="Имя"
-                                value={selectedUser.name}
-                                onChange={(e) => handleInputChange(e, 'name')}
+                                value={selectedUser.fullName}
+                                onChange={(e) => handleInputChange(e, 'fullName')}
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Информация"
+                                value={selectedUser.info}
+                                onChange={(e) => handleInputChange(e, 'info')}
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Информация"
+                                value={selectedUser.email}
+                                onChange={(e) => handleInputChange(e, 'email')}
                                 margin="normal"
                             />
                             <TextField
@@ -138,11 +162,15 @@ export default function TeamMembers() {
                         </>
                     ) : (
                         <>
-                            <h3>{selectedUser.name}</h3>
-                            <img style={{ maxWidth: '500px', maxHeight: '500px' }} src={selectedUser.photo} alt={selectedUser.name} />
+                            <h3>{selectedUser.fullName}</h3>
+                            <h3>{selectedUser.info}</h3>
+                            <h3>{selectedUser.email}</h3>
+
+                            <img style={{maxWidth: '500px', maxHeight: '500px'}} src={selectedUser.photo}
+                                 alt={selectedUser.fullName}/>
                         </>
                     )}
-                    <br />
+                    <br/>
                     {selectedUser.isEditing ? (
                         <Button variant="contained" color="primary" onClick={() => setUsers(users.map(user => {
                             if (user.id === Number(value)) {
