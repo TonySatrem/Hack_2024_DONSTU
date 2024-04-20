@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import styles from "./Carousel.module.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -9,17 +9,22 @@ import Box from "@mui/material/Box";
 import "./Carousel.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Padding } from "@mui/icons-material";
+
 
 const Carousel = ({ cards }) => {
+  const [lastClickTime, setLastClickTime] = useState(0);
+  const [lastAnimationSpeed, setLastAnimationSpeed] = useState(400); // Начальная скорость анимации
+
     const settings = {
         lazyLoad: true,
         className: "center",
-        centerMode: true,
+        centerMode: true, 
         infinite: true,
         slidesToShow: 3,
-        speed: 800,
-        autoplay: false,
+        waitForAnimation: false,
+        speed: lastAnimationSpeed,
+
+        autoplay: false, //
         autoplaySpeed: 3000,
         pauseOnHover: true,
         centerPadding: "0",
@@ -41,12 +46,31 @@ const Carousel = ({ cards }) => {
   const sliderRef = React.useRef();
 
   const goToPrev = () => {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastClickTime;
+    const newSpeed = timeDiff < 500 ? Math.max(100, lastAnimationSpeed / 2) : 800;
+    if ((timeDiff < 350) && (lastAnimationSpeed > 400) || newSpeed < 150) {
+      return; // Игнорируем этот клик
+    }
+    setLastClickTime(currentTime);
+    setLastAnimationSpeed(newSpeed);
     sliderRef.current.slickPrev();
   };
 
   const goToNext = () => {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastClickTime;
+    const newSpeed = timeDiff < 500 ? Math.max(100, lastAnimationSpeed / 2) : 800;
+    console.log(timeDiff, lastAnimationSpeed, newSpeed);
+    if ((timeDiff < 350) && (lastAnimationSpeed > 400) || newSpeed < 100) {
+      return; // Игнорируем этот клик
+    }
+    setLastClickTime(currentTime);
+    setLastAnimationSpeed(newSpeed);
+  
     sliderRef.current.slickNext();
   };
+
   return (
     <Box
       sx={{
