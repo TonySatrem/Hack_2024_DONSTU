@@ -39,7 +39,7 @@ router.delete('/:id', async (req, res) => {
     const participantId = req.params.id
 
     try {
-        dbParticipant.deleteParticipant(participantId)
+        dbParticipant.deleteParticipant({ participantId })
         res.sendStatus(200)
     }
     catch (e) {
