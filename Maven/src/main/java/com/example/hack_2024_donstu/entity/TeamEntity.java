@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 @Entity
+@Table(name = "teamEntity_t")
 public class TeamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,19 +26,19 @@ public class TeamEntity {
     private byte[] banner;
 
     @ElementCollection
-    @Column(name = "designVotes_id", nullable = false)
+    @Column(name = "designVotes_f", nullable = false)
     private ArrayList<Integer> designVotes;
 
     @ElementCollection
-    @Column(name = "usabilityVotes_id", nullable = false)
+    @Column(name = "usabilityVotes_f", nullable = false)
     private ArrayList<Integer> usabilityVotes;
 
     @ElementCollection
-    @Column(name = "layoutVotes_id", nullable = false)
+    @Column(name = "layoutVotes_f", nullable = false)
     private ArrayList<Integer> layoutVotes;
 
     @ElementCollection
-    @Column(name = "realizationVotes_id", nullable = false)
+    @Column(name = "realizationVotes_f", nullable = false)
     private ArrayList<Integer> realizationVotes;
 
     public TeamEntity(Integer id, String name, String login, String password, byte[] banner) {

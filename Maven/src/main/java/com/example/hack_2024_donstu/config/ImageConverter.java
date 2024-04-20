@@ -2,6 +2,7 @@ package com.example.hack_2024_donstu.config;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
