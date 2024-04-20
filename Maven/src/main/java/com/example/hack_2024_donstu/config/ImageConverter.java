@@ -1,4 +1,4 @@
-package config;
+package com.example.hack_2024_donstu.config;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -21,7 +21,7 @@ public class ImageConverter implements AttributeConverter<BufferedImage, Blob> {
             byte[] imageBytes = outputStream.toByteArray();
             return new javax.sql.rowset.serial.SerialBlob(imageBytes);
         } catch (IOException | SQLException e) {
-            throw new RuntimeException("Error converting image to Blob", e);
+            throw new RuntimeException("Ошибка преобразования изображения в большой двоичный объект", e);
         }
     }
 
@@ -32,7 +32,7 @@ public class ImageConverter implements AttributeConverter<BufferedImage, Blob> {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
             return ImageIO.read(inputStream);
         } catch (IOException | SQLException e) {
-            throw new RuntimeException("Error converting Blob to image", e);
+            throw new RuntimeException("Ошибка преобразования большого двоичного объекта в изображение", e);
         }
     }
 }

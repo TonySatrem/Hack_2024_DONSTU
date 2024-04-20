@@ -1,9 +1,6 @@
-package entity;
+package com.example.hack_2024_donstu.entity;
 
 import jakarta.persistence.*;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 @Entity
 public class TeamEntity {
@@ -88,3 +85,4 @@ public class TeamEntity {
         this.designVotes = designVotes;
     }
 }
+
