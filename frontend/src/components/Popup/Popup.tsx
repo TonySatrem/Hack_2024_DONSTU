@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import classes from "./Popup.module.css";
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-export const Popup = (): JSX.Element => {
+export default function Popup ({ onClose }: { onClose: () => void }){
 
+const handleSubmit = () => {
+    // Дополнительная логика для отправки данных, если нужно
+    // После отправки закрыть попап
+    onClose();
+};
     return (
         <>
             <div className={classes.overlay}></div>
@@ -18,7 +23,7 @@ export const Popup = (): JSX.Element => {
                         rows={2}
                         margin='normal'
                     />
-                    <Button style={{ backgroundColor: "#9747FF" }} onClick={() => { }} variant="contained">Отправить</Button>
+                    <Button style={{ backgroundColor: "#9747FF" }} onClick={(handleSubmit)} variant="contained">Отправить</Button>
                 </div>
             </div>
         </>
