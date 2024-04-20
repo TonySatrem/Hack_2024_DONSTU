@@ -11,9 +11,10 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Header from "../Header/Header";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+    const navigate = useNavigate();
   const validationSchema = yup.object({
     teamName: yup
       .string()
@@ -42,18 +43,8 @@ const SignUp = () => {
       .mixed()
       .required("Баннер обязателен для загрузки")
       .test("fileSize", "Размер файла превышает 2 МБ", (value) => {
-        // Проверяем, выбран ли файл и его размер
         return !value || value.size <= 2 * 1024 * 1024;
       })
-    //   .test(
-    //     "fileSize",
-    //     "Файл должен быть не более 2MB",
-    //     (value) => {
-    //         console.log("File size:", value.size);
-    //         return value && value.size <= 2000000;
-    //       }
-    
-    //   )
       .test(
         "fileFormat",
         "Допустимые форматы: jpeg, png, pdf",
@@ -66,6 +57,8 @@ const SignUp = () => {
 
   const handleSubmit = (values) => {
     console.log(values);
+    localStorage.setItem('AuthenticationStatus', true);
+    navigate('/signin');
     // Отправка данных на сервер
   };
 
@@ -216,8 +209,6 @@ const SignUp = () => {
 
                 />
               </Button>
-              {console.log(formik.errors)}
-              {console.log(formik.touched)}
               {formik.touched.banner && formik.errors.banner && (
                 <Box sx={{ color: "red", marginLeft: 1, fontSize: '12px' }}>{formik.errors.banner}</Box>
 )}
