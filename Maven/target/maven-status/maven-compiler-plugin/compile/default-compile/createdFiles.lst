@@ -1,0 +1,5 @@
+config\ImageConverter.class
+repositories\TeamRepository.class
+entity\TeamEntity.class
+service\TeamService.class
+controller\TeamController.class
