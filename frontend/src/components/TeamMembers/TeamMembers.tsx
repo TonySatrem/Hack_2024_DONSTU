@@ -3,6 +3,9 @@ import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Button from "@mui/material/Button";
+import {Popup} from "../Popup/Popup";
+import {useState} from "react";
 
 export default function TeamMembers() {
     const [value, setValue] = React.useState('one');
@@ -18,16 +21,16 @@ export default function TeamMembers() {
         },
         {
             id: 2,
-            name: 'Александр',
+            name: "Полина",
             photo: 'https://i.pravatar.cc/300?img=1',
         },
         {
             id: 3,
-            name: 'Александр',
-            photo: 'https://i.pravatar.cc/300?img=1',
+            name: 'Владлена',
+            photo: 'https://sun9-14.userapi.com/impg/PjvxhrE-VivbuRJqCJUxe2z8pvTg2009JwngxA/qyKabFkU6TE.jpg?size=1620x2160&quality=95&sign=bd6c5239cd8df7d87121a7535fe6a284&type=album',
         }
     ]
-
+    const [isOpen, setIsOpen] = useState(false)
   const selectedUser = users.find((user) => user.id === Number(value));
 
     return (
@@ -55,9 +58,13 @@ export default function TeamMembers() {
             {selectedUser && (
                 <Box sx={{ p: 2 }}>
                     <h3>{selectedUser.name}</h3>
-                    <img src={selectedUser.photo} alt={selectedUser.name} />
+                    <img style={{maxWidth: ':500px',maxHeight: '500px'}} src={selectedUser.photo} alt={selectedUser.name} />
+                    <br/>
+                    <Button onClick={() => setIsOpen(true)} style={{ backgroundColor: "#9747FF" }} variant="contained">Задать вопрос</Button>
                 </Box>
             )}
+            {isOpen && <Popup />}
+
         </Container>
     );
 }
