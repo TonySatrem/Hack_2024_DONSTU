@@ -1,15 +1,18 @@
-export default function getFileLink (req) { 
-    const referer = getReferer(req)
-    const projectPath = getProjectPath(referer)
-    return getFileLink(`/${projectPath}/${req.url}`)
-}
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from "node:fs"
 
-function getProjectPath (s) {
-    const projectPath = !s || s === '' || s.includes('.') ? 'main' : s
-    return projectPath
-}
+export const _dirname = dirname(fileURLToPath(import.meta.url)).slice(0, -10).replace(/\\/g, '\/')
 
-function getReferer (req) {
-    const ref = req.headers.referer?.split('/')?.at(-1)
-    return ref
-} 
+export const getFileLink = url => `${_dirname}client/build${url}`
+
+export function getFile (obj) {
+    const path = obj.isIndex ? getFileLink(`/index.html`) :
+                obj.req ? getFileLink(obj.req.url) : 
+                "Not Found"
+
+    return {
+        file: fs.readFileSync(path, "utf-8"),
+        path
+    }
+}
