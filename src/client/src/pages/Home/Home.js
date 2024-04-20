@@ -7,7 +7,7 @@ import Card from "../../components/Card/Card";
 import {Container, Rating} from "@mui/material";
 import { Popup } from "../../components/Popup/Popup";
 import RatingPopup from "../../components/RatingPopup/RatingPopup";
-import styles from "./Home.module.css";
+import CssBaseline from "@mui/material/CssBaseline";
 
 
 
@@ -23,7 +23,6 @@ const Home = () => {
     ));
 
     return (
-        <div className={styles.home}>
             <Container maxWidth="xl"
                 sx={{
                     display: "flex",
@@ -32,13 +31,15 @@ const Home = () => {
                     minHeight: "90vh",
                     p:0,
                 }}
+                       component="main"
             >
+                <CssBaseline />
                 <Carousel cards={cards} />
-            </Container>
 
             {/* Передаем состояние и функцию для изменения состояния в компонент Card */}
             {isOpen && <RatingPopup onClose={togglePopup} />}
-        </div>
+            </Container>
+
     );
 };
 
