@@ -9,21 +9,34 @@ import Box from "@mui/material/Box";
 import "./Carousel.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Padding } from "@mui/icons-material";
 
 const Carousel = ({ cards }) => {
-  const settings = {
-    lazyLoad: true,
-    className: "center",
-    centerMode: true,
-    infinite: true,
-    slidesToShow: 3,
-    speed: 800,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: true,
-    centerPadding: "0",
-    draggable: false,
-  };
+    const settings = {
+        lazyLoad: true,
+        className: "center",
+        centerMode: true,
+        infinite: true,
+        slidesToShow: 3,
+        speed: 800,
+        autoplay: false,
+        autoplaySpeed: 3000,
+        pauseOnHover: true,
+        centerPadding: "0",
+        draggable: false,
+        responsive: [
+          // Меняем количество слайдов при различных ширинах экрана
+          {
+            breakpoint: 600, // при ширине экрана менее 600px
+            settings: {
+              slidesToShow: 1, // показываем только один слайд
+              centerPadding: "5vw", // отступ от краев
+              draggable: false,
+
+            },
+          },
+        ],
+      };
 
   const sliderRef = React.useRef();
 
@@ -42,7 +55,7 @@ const Carousel = ({ cards }) => {
         height: "100%",
       }}
     >
-      <Button onClick={goToPrev}>
+      <Button className={styles.btn} onClick={goToPrev} sx={{p:0, ml:0}} >
         <NavigateBeforeIcon />
       </Button>
       <Slider ref={sliderRef} {...settings} style={{ overflow: 'hidden' }}>
@@ -52,7 +65,7 @@ const Carousel = ({ cards }) => {
           </div>
         ))}
       </Slider>
-      <Button onClick={goToNext}>
+      <Button className={styles.btn} onClick={goToNext} sx={{p:0, mr:0}} >
         <NavigateNextIcon />
       </Button>
     </Box>
