@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,20 +13,74 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Header from "../Header/Header";
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+const SignUp = () => {
+  const validationSchema = yup.object({
+    teamName: yup
+      .string()
+      .required("Название команды обязательно")
+      .max(20, "Максимальная длина 20 символов"),
+    login: yup.string().required("Логин команды обязателен для заполнения"),
+    password: yup
+      .string()
+      .required("Пароль обязателен для заполнения")
+      .min(8, "Минимальная длина пароля 8 символов")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        "Пароль должен содержать как минимум одну заглавную букву, одну строчную букву, одну цифру и один специальный символ"
+      ),
+    email: yup
+      .string()
+      .email("Некорректный адрес электронной почты")
+      .required("Email обязателен для заполнения"),
+
+    confirmPassword: yup
+      .string()
+      .required("Подтвердите пароль")
+      .oneOf([yup.ref("password"), null], "Пароли должны совпадать"),
+
+    banner: yup
+      .mixed()
+      .required("Баннер обязателен для загрузки")
+      .test("fileSize", "Размер файла превышает 2 МБ", (value) => {
+        // Проверяем, выбран ли файл и его размер
+        return !value || value.size <= 2 * 1024 * 1024;
+      })
+    //   .test(
+    //     "fileSize",
+    //     "Файл должен быть не более 2MB",
+    //     (value) => {
+    //         console.log("File size:", value.size);
+    //         return value && value.size <= 2000000;
+    //       }
+    
+    //   )
+      .test(
+        "fileFormat",
+        "Допустимые форматы: jpeg, png, pdf",
+        (value) =>
+          value &&
+          ["image/jpeg", "image/png", "application/pdf"].includes(value.type)
+      ),
+      
+  });
+
+  const handleSubmit = (values) => {
+    console.log(values);
+    // Отправка данных на сервер
   };
 
+  const formik = useFormik({
+    initialValues: {
+      teamName: "",
+      login: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit,
+  });
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" maxHeight="110vh">
       <CssBaseline />
       <Header />
       <Box
@@ -35,6 +89,8 @@ export default function SignUp() {
           justifyContent: "center",
           alignItems: "center",
           height: "80vh",
+          mt: 10,
+          mb: "10px",
         }}
       >
         <Box
@@ -58,7 +114,7 @@ export default function SignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             sx={{ mt: 3 }}
           >
             <TextField
@@ -70,6 +126,11 @@ export default function SignUp() {
               id="teamName"
               label="Название команды"
               autoFocus
+              value={formik.values.teamName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.teamName && Boolean(formik.errors.teamName)}
+              helperText={formik.touched.teamName && formik.errors.teamName}
             />
             <TextField
               margin="normal"
@@ -79,41 +140,12 @@ export default function SignUp() {
               label="Логин команды"
               name="login"
               autoComplete="login"
+              value={formik.values.login}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.login && Boolean(formik.errors.login)}
+              helperText={formik.touched.login && formik.errors.login}
             />
-
-            {/*                 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="Имя"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Фамилия"
-                    name="lastName"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Почта"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid> */}
             <TextField
               margin="normal"
               required
@@ -123,17 +155,76 @@ export default function SignUp() {
               type="password"
               id="password"
               autoComplete="new-password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
-            <Box sx={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Подтвердите пароль"
+              type="password"
+              id="confirmPassword"
+              autoComplete="new-password"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Почта"
+              name="email"
+              autoComplete="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+
+            <Box
+              sx={{
+                mt: 1,
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+              }}
+            >
               <Button
                 variant="contained"
                 component="label"
                 sx={{ backgroundColor: "#9747FF", color: "white" }}
+                onBlur={formik.handleBlur("banner")}
               >
                 Загрузить баннер
-                <input type="file" hidden />
+                <input
+                  type="file"
+                  hidden
+                  onChange={(event) => formik.setFieldValue("banner", event.currentTarget.files[0])}
+
+                />
               </Button>
+              {console.log(formik.errors)}
+              {console.log(formik.touched)}
+              {formik.touched.banner && formik.errors.banner && (
+                <Box sx={{ color: "red", marginLeft: 1, fontSize: '12px' }}>{formik.errors.banner}</Box>
+)}
             </Box>
+
             <Button
               type="submit"
               fullWidth
@@ -144,6 +235,7 @@ export default function SignUp() {
                 backgroundColor: "#9747FF",
                 color: "white",
               }}
+              disabled={!formik.isValid}
             >
               Зарегистрироваться
             </Button>
@@ -163,4 +255,6 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-}
+};
+
+export default SignUp;

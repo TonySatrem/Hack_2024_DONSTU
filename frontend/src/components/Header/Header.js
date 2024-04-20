@@ -42,7 +42,6 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <React.Fragment>
 
       <AppBar position="fixed" style={{ backgroundColor: "#9747FF" }}>        <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -122,8 +121,6 @@ function ResponsiveAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Toolbar />
-    </React.Fragment>
 
   );
 }
