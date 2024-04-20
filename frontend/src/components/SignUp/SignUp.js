@@ -37,31 +37,51 @@ export default function SignUp() {
           height: "80vh",
         }}
       >
-        <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            border: "1px solid rgba(0, 0, 0, 0.4)", // Линия границы
+            borderRadius: "16px", // Радиус скругления
+            boxShadow: "0px 0px 7px rgba(0, 0, 0, 0.3)", // Тень
+            padding: "20px", // Дополнительный отступ внутри контейнера
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Регистрация команды
+          </Typography>
           <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                border: '1px solid rgba(0, 0, 0, 0.4)', // Линия границы
-                borderRadius: '16px', // Радиус скругления
-                boxShadow: '0px 0px 7px rgba(0, 0, 0, 0.3)', // Тень
-                padding: '20px', // Дополнительный отступ внутри контейнера
-            }}
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Регистрация
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
-            >
+            <TextField
+              margin="normal"
+              autoComplete="team-name"
+              name="teamName"
+              required
+              fullWidth
+              id="teamName"
+              label="Название команды"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="login"
+              label="Логин команды"
+              name="login"
+              autoComplete="login"
+            />
+
+            {/*                 
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -93,41 +113,53 @@ export default function SignUp() {
                     name="email"
                     autoComplete="email"
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Пароль"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
-                </Grid>
-              </Grid>
+                </Grid> */}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Пароль"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+            />
+            <Box sx={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
               <Button
-                type="submit"
-                fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#9747FF', color: 'white' }}
+                component="label"
+                sx={{ backgroundColor: "#9747FF", color: "white" }}
               >
-                Зарегистрироваться
+                Загрузить баннер
+                <input type="file" hidden />
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link
-                    href="/signin"
-                    variant="body2"
-                    sx={{ color: "#9747FF", textDecoration: "none" }}
-                  >
-                    Уже есть аккаунт? Войти
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                backgroundColor: "#9747FF",
+                color: "white",
+              }}
+            >
+              Зарегистрироваться
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link
+                  href="/signin"
+                  variant="body2"
+                  sx={{ color: "#9747FF", textDecoration: "none" }}
+                >
+                  Уже есть аккаунт? Войти
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
-        </Container>
+        </Box>
       </Box>
     </Container>
   );
