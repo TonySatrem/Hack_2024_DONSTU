@@ -3,6 +3,8 @@ package com.example.hack_2024_donstu.entity;
 import com.example.hack_2024_donstu.enums.VoteType;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+
 @Entity
 public class TeamEntity {
     @Id
@@ -22,17 +24,21 @@ public class TeamEntity {
     @Column(name = "banner_f", nullable = false)
     private byte[] banner;
 
+    @ElementCollection
     @Column(name = "designVotes_id", nullable = false)
-    private Integer designVotes;
+    private ArrayList<Integer> designVotes;
 
+    @ElementCollection
     @Column(name = "usabilityVotes_id", nullable = false)
-    private Integer usabilityVotes;
+    private ArrayList<Integer> usabilityVotes;
 
+    @ElementCollection
     @Column(name = "layoutVotes_id", nullable = false)
-    private Integer layoutVotes;
+    private ArrayList<Integer> layoutVotes;
 
+    @ElementCollection
     @Column(name = "realizationVotes_id", nullable = false)
-    private Integer realizationVotes;
+    private ArrayList<Integer> realizationVotes;
 
     public TeamEntity(Integer id, String name, String login, String password, byte[] banner) {
         this.id = id;
@@ -40,10 +46,10 @@ public class TeamEntity {
         this.login = login;
         this.password = password;
         this.banner = banner;
-        this.designVotes = 0;
-        this.usabilityVotes = 0;
-        this.layoutVotes = 0;
-        this.realizationVotes = 0;
+        this.designVotes = new ArrayList<Integer>();
+        this.usabilityVotes = new ArrayList<Integer>();
+        this.layoutVotes = new ArrayList<Integer>();
+        this.realizationVotes = new ArrayList<Integer>();
     }
 
     public TeamEntity() {
@@ -90,56 +96,55 @@ public class TeamEntity {
         this.banner = banner;
     }
 
-    public Integer getDesignVotes() {
+    public ArrayList<Integer> getDesignVotes() {
         return designVotes;
     }
 
-    public void setDesignVotes(Integer designVotes) {
+    public void setDesignVotes(ArrayList<Integer> designVotes) {
         this.designVotes = designVotes;
     }
 
-    public Integer getUsabilityVotes() {
+    public ArrayList<Integer> getUsabilityVotes() {
         return designVotes;
     }
 
-    public void setUsabilityVotes(Integer designVotes) {
+    public void setUsabilityVotes(ArrayList<Integer> designVotes) {
         this.designVotes = designVotes;
     }
 
-    public Integer getLayoutVotes() {
+    public ArrayList<Integer> getLayoutVotes() {
         return designVotes;
     }
 
-    public void setLayoutVotes(Integer designVotes) { this.designVotes = designVotes; }
+    public void setLayoutVotes(ArrayList<Integer> designVotes) { this.designVotes = designVotes; }
 
-    public Integer getRealizationVotes() {
+    public ArrayList<Integer> getRealizationVotes() {
         return designVotes;
     }
 
-    public void setRealizationVotes(Integer designVotes) {
+    public void setRealizationVotes(ArrayList<Integer> designVotes) {
         this.designVotes = designVotes;
     }
 
-    public void addDesignVote() {
-        this.designVotes += 1;
+    public void addDesignVote(Integer vote) {
+        this.designVotes.add(vote);
     }
-    public void addUsabilityVote() {
-        this.usabilityVotes += 1;
+    public void addUsabilityVote(Integer vote) {
+        this.usabilityVotes.add(vote);
     }
-    public void addLayoutVote() {
-        this.layoutVotes += 1;
+    public void addLayoutVote(Integer vote) {
+        this.layoutVotes.add(vote);
     }
-    public void addRealizationVote() {
-        this.realizationVotes += 1;
+    public void addRealizationVote(Integer vote) {
+        this.realizationVotes.add(vote);
     }
 
-    public void addVote(VoteType type) {
+    public void addVote(VoteType type, Integer vote) {
         switch (type) {
-            case Design -> this.addDesignVote();
-            case Usability -> this.addUsabilityVote();
-            case Layout -> this.addLayoutVote();
-            case Realization -> this.addRealizationVote();
+            case Design -> this.addDesignVote(vote);
+            case Usability -> this.addUsabilityVote(vote);
+            case Layout -> this.addLayoutVote(vote);
+            case Realization -> this.addRealizationVote(vote);
         }
     }
 }
-
