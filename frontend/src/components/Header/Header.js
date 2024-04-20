@@ -44,13 +44,14 @@ function ResponsiveAppBar() {
   return (
     <React.Fragment>
 
-      <AppBar position="fixed" style={{ backgroundColor: "#9747FF" }}>        <Container maxWidth="xl">
-          <Toolbar disableGutters>
+        <AppBar position="fixed" style={{ backgroundColor: "#9747FF", height: 64,maxHeight: 90 }}>
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
 
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
-                  size="large"
+                  size="smalll"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
@@ -63,12 +64,10 @@ function ResponsiveAppBar() {
                     id="menu-appbar"
                     anchorEl={anchorElNav}
                     anchorOrigin={{
-                        vertical: 'bottom',
                         horizontal: 'left',
                     }}
                     keepMounted
                     transformOrigin={{
-                        vertical: 'top',
                         horizontal: 'left',
                     }}
                     open={Boolean(anchorElNav)}
@@ -96,7 +95,7 @@ function ResponsiveAppBar() {
                   display: { xs: 'flex', md: 'none' },
                   flexGrow: 1,
                   fontFamily: 'monospace',
-                  fontWeight: 700,
+                  fontWeight: 400,
                   letterSpacing: '.3rem',
                   color: 'inherit',
                   textDecoration: 'none',
