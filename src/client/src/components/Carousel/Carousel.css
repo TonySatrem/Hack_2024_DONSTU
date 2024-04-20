@@ -12,6 +12,7 @@
 
 .slick-slide Card {
     transition: all 0.4s ease-in-out;
+    width: max-content;
 }
 
 .slick-center {

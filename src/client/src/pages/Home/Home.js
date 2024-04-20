@@ -24,13 +24,13 @@ const Home = () => {
 
     return (
         <div className={styles.home}>
-            <Container
-                maxWidth="xl"
+            <Container maxWidth="xl"
                 sx={{
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
                     minHeight: "90vh",
+                    p:0,
                 }}
             >
                 <Carousel cards={cards} />

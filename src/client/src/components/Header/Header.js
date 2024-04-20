@@ -53,7 +53,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#9747FF", color: "white" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#9747FF", color: "white", fontWeight: "semi-bold" }}> 
       <Container maxWidth="xl" sx={{ p: 0 }}>
         <Toolbar sx={{ p: 0 }} disableGutters>
           <Box sx={{ flexGrow: 0 }}>
