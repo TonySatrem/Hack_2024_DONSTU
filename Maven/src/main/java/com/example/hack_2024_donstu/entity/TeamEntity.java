@@ -2,7 +2,6 @@ package com.example.hack_2024_donstu.entity;
 
 import com.example.hack_2024_donstu.enums.VoteType;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 
 @Entity
@@ -59,10 +58,6 @@ public class TeamEntity {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
