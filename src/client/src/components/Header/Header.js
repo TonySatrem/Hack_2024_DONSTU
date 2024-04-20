@@ -15,7 +15,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Импортируем хук для использования контекста аутентификации
 import { useNavigate } from "react-router-dom";
 import { darkTheme, lightTheme } from "../../utils/theme"; // Импортируем темы
-
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 const pages = [{ name: "Главная", path: "/" }];
 const settings = [
     { name: "Команда", path: "/personal" },
@@ -169,7 +170,6 @@ function Header({ toggleTheme }) {
                             </Button>
                         )}
                     </Box>
-                    {/* Добавляем кнопку переключения темы */}
                     <Button
                         onClick={toggleTheme}
                         color="inherit"
@@ -179,7 +179,7 @@ function Header({ toggleTheme }) {
                             ":hover": { backgroundColor: "#7436C5", color: "white" }
                         }}
                     >
-                        {isDarkTheme ? 'Светлая тема' : 'Темная тема'}
+                        {isDarkTheme ? "🌞" : "🌚"}
                     </Button>
                 </Toolbar>
             </Container>

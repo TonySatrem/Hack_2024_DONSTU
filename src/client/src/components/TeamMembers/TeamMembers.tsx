@@ -31,8 +31,8 @@ export default function TeamMembers() {
     const users = [
         {
             id: 1,
-            name: 'Александр',
-            photo: 'https://i.pravatar.cc/300?img=1',
+            name: 'Дарья',
+            photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
         },
         {
             id: 2,
