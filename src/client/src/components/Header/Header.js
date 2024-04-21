@@ -68,6 +68,7 @@ function Header({ toggleTheme }) {
             <Container maxWidth="xl" sx={{ p: 0 }}>
                 <Toolbar sx={{ p: 0 }} disableGutters>
                     <Box sx={{ flexGrow: 0 }}>
+
                         <IconButton
                             size="large"
                             aria-label="menu"
@@ -143,6 +144,17 @@ function Header({ toggleTheme }) {
                                     open={Boolean(anchorElUser)}
                                     onClose={handleCloseUserMenu}
                                 >
+                                    <Button
+                                        onClick={toggleTheme}
+                                        color="inherit"
+                                        sx={{
+                                            display: "block",
+                                            paddingY: 1.5,
+                                            ":hover": { backgroundColor: "#7436C5", color: "white" }
+                                        }}
+                                    >
+                                        {isDarkTheme ? "🌞" : "🌚"}
+                                    </Button>
                                     {settings.map((setting) => (
                                         <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                                             <Typography component={Link} to={setting.path} textAlign="center" sx={{ textDecoration: "none", color: "black" }}>
@@ -170,17 +182,7 @@ function Header({ toggleTheme }) {
                             </Button>
                         )}
                     </Box>
-                    <Button
-                        onClick={toggleTheme}
-                        color="inherit"
-                        sx={{
-                            display: "block",
-                            paddingY: 1.5,
-                            ":hover": { backgroundColor: "#7436C5", color: "white" }
-                        }}
-                    >
-                        {isDarkTheme ? "🌞" : "🌚"}
-                    </Button>
+
                 </Toolbar>
             </Container>
         </AppBar>

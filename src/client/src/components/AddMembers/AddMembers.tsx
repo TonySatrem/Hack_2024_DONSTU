@@ -13,7 +13,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 1000,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     borderRadius: 5,
@@ -23,10 +23,11 @@ const style = {
 };
 
 interface Member {
-    fio: string;
+    fullName: string;
     email: string;
     info: string;
-    avatar: string;
+    teamId: number;
+    photo: string;
     [key: string]: any;
 }
 
@@ -60,10 +61,11 @@ export default function AddMembers() {
 
     const addMember = () => {
         const newMember: Member = {
-            fio: '',
+            fullName: '',
             email: '',
             info: '',
-            avatar: '',
+            teamId:0,
+            photo: '',
         };
         setMembers([...members, newMember]);
     };
@@ -95,14 +97,14 @@ export default function AddMembers() {
                         ))}
                         {!formSubmitted && (
                             <Formik
-                                initialValues={{ fio: '', email: '', info: '', avatar: '' }}
+                                initialValues={{ fullName: '', email: '', info: '', photo: '',teamId:0 }}
                                 onSubmit={handleSubmit}
                                 validationSchema={validationSchema}
                             >
                                 {({ errors, touched }) => (
                                     <Form>
                                         <Field
-                                            name="fio"
+                                            name="fullName"
                                             type="text"
                                             label="ФИО"
                                             variant="outlined"
