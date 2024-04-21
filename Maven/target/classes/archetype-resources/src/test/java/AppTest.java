@@ -1,4 +1,4 @@
-package $org.example;
+package $com.example.hack_2024_donstu;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

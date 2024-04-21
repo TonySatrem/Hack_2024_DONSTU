@@ -1,12 +1,16 @@
 package com.example.hack_2024_donstu.controller;
 
-import com.example.hack_2024_donstu.enums.VoteType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.example.hack_2024_donstu.entity.TeamEntity;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
+import com.example.hack_2024_donstu.enums.VoteType;
 import com.example.hack_2024_donstu.repositories.TeamRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/votes")
@@ -15,6 +19,7 @@ public class VoteController {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Transactional
     @PostMapping("/add")
     public boolean addVote(
             @RequestBody int teamId,

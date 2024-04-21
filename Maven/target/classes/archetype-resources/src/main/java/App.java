@@ -1,4 +1,4 @@
-package $org.example;
+package $com.example.hack_2024_donstu;
 
 /**
  * Hello world!

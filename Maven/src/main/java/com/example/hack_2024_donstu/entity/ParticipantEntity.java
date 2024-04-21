@@ -2,6 +2,7 @@ package com.example.hack_2024_donstu.entity;
 
 import jakarta.persistence.*;
 
+@Entity
 public class ParticipantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

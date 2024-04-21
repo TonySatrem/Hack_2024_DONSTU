@@ -1,7 +1,9 @@
 package com.example.hack_2024_donstu.entity;
 
+import com.example.hack_2024_donstu.config.ArrayListConverter;
 import com.example.hack_2024_donstu.enums.VoteType;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 
 @Entity
@@ -24,20 +26,20 @@ public class TeamEntity {
     @Column(name = "banner_f", nullable = false)
     private byte[] banner;
 
-    @ElementCollection
-    @Column(name = "designVotes_f", nullable = false)
+    @Column(name = "designVotes_f")
+    @Convert(converter = ArrayListConverter.class)
     private ArrayList<Integer> designVotes;
 
-    @ElementCollection
-    @Column(name = "usabilityVotes_f", nullable = false)
+    @Column(name = "usabilityVotes_f")
+    @Convert(converter = ArrayListConverter.class)
     private ArrayList<Integer> usabilityVotes;
 
-    @ElementCollection
-    @Column(name = "layoutVotes_f", nullable = false)
+    @Column(name = "layoutVotes_f")
+    @Convert(converter = ArrayListConverter.class)
     private ArrayList<Integer> layoutVotes;
 
-    @ElementCollection
-    @Column(name = "realizationVotes_f", nullable = false)
+    @Column(name = "realizationVotes_f")
+    @Convert(converter = ArrayListConverter.class)
     private ArrayList<Integer> realizationVotes;
 
     public TeamEntity(Integer id, String name, String login, String password, byte[] banner) {
@@ -101,25 +103,25 @@ public class TeamEntity {
     }
 
     public ArrayList<Integer> getUsabilityVotes() {
-        return designVotes;
+        return usabilityVotes;
     }
 
-    public void setUsabilityVotes(ArrayList<Integer> designVotes) {
-        this.designVotes = designVotes;
+    public void setUsabilityVotes(ArrayList<Integer> usabilityVotes) {
+        this.usabilityVotes = usabilityVotes;
     }
 
     public ArrayList<Integer> getLayoutVotes() {
-        return designVotes;
+        return layoutVotes;
     }
 
-    public void setLayoutVotes(ArrayList<Integer> designVotes) { this.designVotes = designVotes; }
+    public void setLayoutVotes(ArrayList<Integer> layoutVotes) { this.layoutVotes = layoutVotes; }
 
     public ArrayList<Integer> getRealizationVotes() {
-        return designVotes;
+        return realizationVotes;
     }
 
-    public void setRealizationVotes(ArrayList<Integer> designVotes) {
-        this.designVotes = designVotes;
+    public void setRealizationVotes(ArrayList<Integer> realizationVotes) {
+        this.realizationVotes = realizationVotes;
     }
 
     public void addDesignVote(Integer vote) {
