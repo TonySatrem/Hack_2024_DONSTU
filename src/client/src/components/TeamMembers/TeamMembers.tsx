@@ -108,7 +108,6 @@ export default function TeamMembers() {
         // Здесь можно добавить в локалсторидж айди команды
     };
     const editUser = () => {
-        // Find the user to edit and set isEditing flag to true
         setUsers(users.map(user => {
             if (user.id === Number(value)) {
                 return {
@@ -118,10 +117,13 @@ export default function TeamMembers() {
             }
             return user;
         }));
-    
+
+
+
+
         // Find the edited user
-        const editedUser = users.find(user => user.id === Number(value));
-    
+        // const editedUser = users.find(user => user.id === Number(value));
+
         // // Send PUT request to update user data
         // const response = axios.put(API_URL + PART_EDIT, {
         //     id: editedUser.id,
@@ -130,18 +132,25 @@ export default function TeamMembers() {
         // });
         // console.log('Ответ от сервера:', response);
     };
-    
+
 
     const deleteUser = () => {
-        const response = axios.delete(API_URL + PART_DELETE, {
-            data: {
-                id: Number(value)
-            }
-        });
-        console.log('Ответ от сервера:', response);
+
         setUsers(users.filter(user => user.id !== Number(value)));
 };
-
+    const saveChanges = () => {
+        // Сохранение изменений пользователя
+        setUsers(users.map(user => {
+            if (user.id === Number(value)) {
+                return {
+                    ...user,
+                    isEditing: false // Сбросить флаг редактирования после сохранения изменений
+                };
+            }
+            return user;
+        }));
+        // Здесь можно отправить запрос на сервер для сохранения изменений
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
         const newValue = event.target.value;
@@ -207,6 +216,9 @@ export default function TeamMembers() {
                                 onChange={(e) => handleInputChange(e, 'photo')}
                                 margin="normal"
                             />
+                            <Button variant="contained" color="primary" onClick={saveChanges}>
+                                Сохранить
+                            </Button>
                         </>
                     ) : (
                         <Card style={{ width: "100%", margin: 'auto', marginTop: 16 }}>
@@ -224,23 +236,10 @@ export default function TeamMembers() {
                             <CardContent>
                                 <Typography variant="body1">{selectedUser.info}</Typography>
                             </CardContent>
-                            {selectedUser.isEditing ? (
-                                <Button variant="contained" color="primary" onClick={() => setUsers(users.map(user => {
-                                    if (user.id === Number(value)) {
-                                        return {
-                                            ...user,
-                                            isEditing: false // Toggle edit mode off
-                                        };
-                                    }
-                                    return user;
-                                }))}>
-                                    Сохранить изменения
-                                </Button>
-                            ) : (
+
                                 <Button variant="contained" color="secondary" onClick={editUser}>
                                     <EditIcon sx={{ cursor: 'pointer' }} />
                                 </Button>
-                            )}
                         </Card>
                     )}
                     <br/>
