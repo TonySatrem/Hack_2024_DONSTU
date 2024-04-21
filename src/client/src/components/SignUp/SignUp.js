@@ -19,6 +19,8 @@ import Compress from 'compressorjs';
 import AddMembers from '../AddMembers/AddMembers';
 import { ConstructionOutlined } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext"; 
+import { imageToBase64 } from "../Converter/Converter";  
+
 
 const ADD_TEAM = "/teams/add";
 const ADD_MEMBERS = "/partisians/add";
@@ -76,41 +78,6 @@ const SignUp = () => {
     }),
     
   });
-
-  const compressAndConvertToBase64 = async (file, fileType) => {
-    try {
-      let base64Data;
-  
-      if (fileType === 'application/pdf') {
-        const pdfDoc = await PDFDocument.load(file);
-        const newPdfDoc = await PDFDocument.create();
-  
-        const pages = pdfDoc.getPages();
-        for (let i = 0; i < pages.length; i++) {
-          const page = newPdfDoc.addPage([pages[i].getWidth(), pages[i].getHeight()]);
-          page.drawPage(pages[i]);
-        }
-  
-        const pdfBytes = await newPdfDoc.save();
-        base64Data = Buffer.from(pdfBytes).toString('base64');
-      } else {
-        const compress = new Compress();
-        const compressedFiles = await compress.compress([file], {
-          quality: 0.75, // Качество сжатия JPEG (0-1)
-          maxWidth: 1920, // Максимальная ширина изображения
-          maxHeight: 1080, // Максимальная высота изображения
-          resize: true, // Масштабировать изображение
-        });
-        console.log('Сжатый файл:', compressedFiles);
-        base64Data = compressedFiles[0].data;
-      }
-  
-      return base64Data;
-    } catch (error) {
-      console.error('Ошибка при сжатии и конвертации в base64:', error);
-      throw error;
-    }
-  };
   
   const handleSubmit = async (values) => {
     try {
@@ -118,25 +85,29 @@ const SignUp = () => {
         setErrMsg('Выберите хотя бы одного участника');
       } else{
       const { teamName, email, login, password, banner } = values;
-      // const base64Data = await compressAndConvertToBase64(values.banner, values.banner.type); // Используем JPEG как формат изображения
+      // const base64String = await imageToBase64(banner);
       console.log(JSON.stringify({
         name: teamName,
         email,
         login,
         password,
-        banner: banner.name
+        // banner: base64String,
+        banner: banner.name,
       }));
       const response = await axios.post(API_URL + ADD_TEAM, {
         name: teamName,
         email,
         login,
         password,
-        banner: banner.name
+        banner: banner.name,
+      },{
+        timeout: 3000, // Установка времени ожидания в 3 секунды
       });
       console.log('Ответ от сервера:', response);
       localStorage.setItem('teamId', response.data.teamId); // TODO: После этого отправить участников команды из modal окна
       if (response.data.status === 'success') {
-        addingMembers();}
+        addingMembers();
+      }
   }
       
     } catch (error) {
