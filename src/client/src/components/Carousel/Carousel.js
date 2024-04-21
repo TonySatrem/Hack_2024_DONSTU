@@ -91,7 +91,7 @@ const Carousel = ({ cards }) => {
           </div>
         ))}
       </Slider>
-      <Button className={styles.btn} onClick={goToNext} sx={{p:0, mr:0}} >
+      <Button  className={styles.btn} onClick={goToNext} sx={{p:0, mr:0}} >
         <NavigateNextIcon />
       </Button>
     </Box>

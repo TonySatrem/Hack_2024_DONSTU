@@ -35,7 +35,6 @@ const Home = () => {
                        component="main"
             >
                 <CssBaseline />
-                <Converter/>
                 <Carousel cards={cards} />
 
             {/* Передаем состояние и функцию для изменения состояния в компонент Card */}

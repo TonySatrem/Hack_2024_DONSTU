@@ -68,7 +68,7 @@ export default function RecipeReviewCard({ isOpen, togglePopup }) {
 
                 <CardActions disableSpacing>
                     {/* Используем функцию togglePopup, чтобы открыть или закрыть попап */}
-                    <Button variant="contained" style={{backgroundColor:"#9747FF"}} onClick={handleOpen}>Оценить команду</Button>
+                    <Button  style={{backgroundColor:"#9747FF",width: '100%',color:"white"}} onClick={handleOpen}>Оценить команду</Button>
 
                     {/*<Button*/}
                     {/*    onClick={() => {*/}

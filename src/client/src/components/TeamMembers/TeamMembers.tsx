@@ -11,6 +11,11 @@ import { Modal, TextField } from "@mui/material";
 
 import { API_URL } from '../../api/apiConfig';
 import axios from 'axios';
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import CardContent from "@mui/material/CardContent";
+import EditIcon from "@mui/icons-material/Edit";
 
 const PART_ADD = '/partisians/add';
 const PART_EDIT = '/partisians/edit';
@@ -22,7 +27,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 200,
+    width: 350,
     bgcolor: 'background.paper',
     border: '1px solid white',
     borderRadius: 5,
@@ -38,7 +43,7 @@ export default function TeamMembers() {
         {
             id: 1,
             fullName: 'Дарья',
-            info: 'Менеджер',
+            info: '1с разработчик',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -47,7 +52,7 @@ export default function TeamMembers() {
         {
             id: 2,
             fullName: 'Дарья',
-            info: 'Менеджер',
+            info: '1с разработчик',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -56,7 +61,7 @@ export default function TeamMembers() {
         {
             id: 3,
             fullName: 'Дарья',
-            info: 'Менеджер',
+            info: '1с разработчик',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -170,6 +175,8 @@ export default function TeamMembers() {
                     {users.map((user) => (
                         <Tab key={user.id} value={String(user.id)} label={'Участник №' + user.id} />
                     ))}
+                    <Button variant="contained" color="primary" style={{ marginLeft: '10px' }} onClick={addUser}>Добавить пользователя</Button>
+
                 </Tabs>
             </Box>
             {selectedUser && (
@@ -202,35 +209,43 @@ export default function TeamMembers() {
                             />
                         </>
                     ) : (
-                        <>
-                            <h3>{selectedUser.fullName}</h3>
-                            <h3>{selectedUser.info}</h3>
-                            <h3>{selectedUser.email}</h3>
-
-                            <img style={{maxWidth: '500px', maxHeight: '500px'}} src={selectedUser.photo}
-                                 alt={selectedUser.fullName}/>
-                        </>
+                        <Card style={{ width: "100%", margin: 'auto', marginTop: 16 }}>
+                            <CardHeader
+                                avatar={
+                                    <Avatar
+                                        alt={selectedUser.fullName}
+                                        src={selectedUser.photo}
+                                        style={{ width: 70, height: 70 }}
+                                    />
+                                }
+                                title={<Typography variant="h5">{selectedUser.fullName}</Typography>}
+                                subheader={<Typography variant="subtitle1">{selectedUser.info}</Typography>}
+                            />
+                            <CardContent>
+                                <Typography variant="body1">{selectedUser.email}</Typography>
+                            </CardContent>
+                            {selectedUser.isEditing ? (
+                                <Button variant="contained" color="primary" onClick={() => setUsers(users.map(user => {
+                                    if (user.id === Number(value)) {
+                                        return {
+                                            ...user,
+                                            isEditing: false // Toggle edit mode off
+                                        };
+                                    }
+                                    return user;
+                                }))}>
+                                    Сохранить изменения
+                                </Button>
+                            ) : (
+                                <Button variant="contained" color="secondary" onClick={editUser}>
+                                    <EditIcon sx={{ cursor: 'pointer' }} />
+                                </Button>
+                            )}
+                        </Card>
                     )}
                     <br/>
-                    {selectedUser.isEditing ? (
-                        <Button variant="contained" color="primary" onClick={() => setUsers(users.map(user => {
-                            if (user.id === Number(value)) {
-                                return {
-                                    ...user,
-                                    isEditing: false // Toggle edit mode off
-                                };
-                            }
-                            return user;
-                        }))}>
-                            Сохранить изменения
-                        </Button>
-                    ) : (
-                        <Button variant="contained" color="secondary" onClick={editUser}>
-                            Редактировать пользователя
-                        </Button>
-                    )}
-                    <Button variant="contained" style={{ backgroundColor: "#9747FF", marginLeft: '10px' }} onClick={handleOpen}>Задать вопрос</Button>
-                    <Button variant="contained" color="primary" style={{ marginLeft: '10px' }} onClick={addUser}>Добавить пользователя</Button>
+
+                    <Button variant="contained" style={{ backgroundColor: "#9747FF", marginLeft: '10px' ,width: '100%' }} onClick={handleOpen}>Задать вопрос</Button>
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -238,15 +253,16 @@ export default function TeamMembers() {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <TextField id="filled-basic" label="Ваше ФИО" variant="filled" margin="normal" />
-                            <TextField id="filled-basic" label="Email" variant="filled" margin="normal" />
+                            <TextField style={{width: '100%'}} id="filled-basic" label="Ваше ФИО" variant="filled" margin="normal" />
+                            <TextField style={{width: '100%'}} id="filled-basic" label="Email" variant="filled" margin="normal" />
                             <TextField
+                                style={{width: '100%'}}
                                 placeholder="Ваш вопрос"
                                 multiline
                                 rows={2}
                                 margin='normal'
                             />
-                            <Button style={{ backgroundColor: "#9747FF" }} variant="contained">Отправить</Button>
+                            <Button style={{ backgroundColor: "#9747FF",width: '100%' }} variant="contained">Отправить</Button>
                         </Box>
                     </Modal>
                 </Box>
