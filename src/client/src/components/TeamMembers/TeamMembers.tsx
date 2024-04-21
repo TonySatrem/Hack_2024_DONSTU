@@ -18,9 +18,7 @@ import CardContent from "@mui/material/CardContent";
 import EditIcon from "@mui/icons-material/Edit";
 
 const PART_ADD = '/partisians/add';
-const PART_EDIT = '/partisians/edit';
-const PART_DELETE = '/partisians/delete';
-const PART_QUESTION = '/partisians/question';
+const PART = '/partisians/';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -133,7 +131,7 @@ export default function TeamMembers() {
     
 
     const deleteUser = () => {
-        const response = axios.delete(API_URL + PART_DELETE, {
+        const response = axios.delete(API_URL + PART, {
             data: {
                 id: Number(value)
             }
