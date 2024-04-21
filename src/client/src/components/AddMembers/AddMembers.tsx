@@ -64,24 +64,15 @@ export default function AddMembers() {
     const [formSubmitted, setFormSubmitted] = React.useState(false);
     const [avatar, setAvatar] = React.useState<File | null>(null); // Состояние для хранения выбранного аватара
 
-    const handleSubmit = async (values: Member) => {
-        const id = localStorage.getItem('teamId');
-
-        let base64String = '';
-        if (avatar) {
-            base64String = await getBase64(avatar);
-        }
-
-        const response = await axios.post(API_URL + PART_ADD, {
-            fullName: values.fullName,
-            email: values.email,
-            teamId: id,
-            info: values.info,
-            photo: base64String,
-        });
-        setMembers([...members, response.data]); // Добавляем нового участника к списку после успешной отправки на сервер
+    const handleSubmit = (values: Member) => {
+        const currentMembers: Member[] = JSON.parse(localStorage.getItem('members') || '[]');
+        const updatedMembers = [...currentMembers, values];
+        localStorage.setItem('members', JSON.stringify(updatedMembers));
+        setMembers(updatedMembers); // Обновляем состояние компонента
         setFormSubmitted(true);
+        setOpen(false);
     };
+
 
     const getBase64 = (file: File): Promise<string> => {
         return new Promise<string>((resolve, reject) => {

@@ -22,18 +22,20 @@ export default function SignIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const login = event.target.login.value;
+    const loginInput = event.target.login.value;
     const password = event.target.password.value;
     console.log(JSON.stringify({
-      login,
+      login: loginInput,
       password
     }));
     const response = await axios.post(API_URL + URL_LOGIN, {
-      login,
+      login: loginInput,
       password,
     })
-    localStorage.setItem('team', response.data);
-    login();
+    console.log('Ответ от сервера:', response);
+    // Он присылает только  teamId...
+    // localStorage.setItem('team', response.data);
+    login(response.data.teamId);
     navigate('/personal');
   };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Avatar from "@mui/material/Avatar";
@@ -21,8 +21,14 @@ import { ConstructionOutlined } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext"; 
 
 const ADD_TEAM = "/teams/add";
+const ADD_MEMBERS = "/partisians/add";
+window.addEventListener('beforeunload', () => {
+  localStorage.removeItem('members');
+});
 
 const SignUp = () => {
+  const [errMsg, setErrMsg] = React.useState('');
+  const [membersAdded, setMembersAdded] = React.useState(false);
 
   const navigate = useNavigate();
   const validationSchema = yup.object({
@@ -62,6 +68,13 @@ const SignUp = () => {
           value &&
           ["image/jpeg", "image/png", "application/pdf"].includes(value.type)
       ),
+    members: yup
+      .mixed()
+      .test("localStorage", "Элемент 'members' в localStorage не найден или пуст", () => {
+        const members = localStorage.getItem("members");
+        return members !== null && members.length > 0;
+    }),
+    
   });
 
   const compressAndConvertToBase64 = async (file, fileType) => {
@@ -101,6 +114,9 @@ const SignUp = () => {
   
   const handleSubmit = async (values) => {
     try {
+      if (localStorage.getItem('members').length === 0) {
+        setErrMsg('Выберите хотя бы одного участника');
+      } else{
       const { teamName, email, login, password, banner } = values;
       // const base64Data = await compressAndConvertToBase64(values.banner, values.banner.type); // Используем JPEG как формат изображения
       console.log(JSON.stringify({
@@ -119,13 +135,52 @@ const SignUp = () => {
       });
       console.log('Ответ от сервера:', response);
       localStorage.setItem('teamId', response.data.teamId); // TODO: После этого отправить участников команды из modal окна
+      if (response.data.status === 'success') {
+        addingMembers();}
+  }
       
     } catch (error) {
       console.error('Ошибка при отправке данных:', error);
       throw error;
     }
   };
-  
+
+  const handleAddMembers = () => {
+    const members = JSON.parse(localStorage.getItem('members'));
+    if (members && members.length > 0) {
+      setMembersAdded(true);
+    }
+    else {
+      setMembersAdded(false);
+    }
+  };  
+
+  const addingMembers = () => {
+    const members = JSON.parse(localStorage.getItem('members'));
+    const countMembers = members.length;
+    for (let i = 0; i < countMembers; i++) {
+      const member = members[i];
+      const values = {
+        fullName: member.fullName,
+        email: member.email,
+        info: member.info,
+        teamId: localStorage.getItem('teamId'),
+        photo: member.photo,
+      };
+      handleSubmitMembers(values);
+    }
+  };
+
+  const handleSubmitMembers = async (values) => {
+    try {
+      console.log(values);
+      const response = await axios.post(API_URL + ADD_MEMBERS, values);
+      console.log('Ответ от сервера:', response);
+    } catch (error) {
+      console.error('Ошибка при отправке данных:', error);
+      throw error;
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -138,6 +193,10 @@ const SignUp = () => {
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   });
+  useEffect(() => {
+    localStorage.setItem('members', JSON.stringify([]));
+    
+  } , []);
 
   return (
     <Container component="main" maxWidth="xs" maxHeight="110vh">
@@ -284,8 +343,20 @@ const SignUp = () => {
               )}
             </Box>
             <br/>
-              <AddMembers/>
-
+            <Box
+              sx={{
+                mt: 1,
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+              }}  
+            >
+              {errMsg && (
+                <Box sx={{ color: "red", marginLeft: 1, fontSize: "12px" }}>
+                  {errMsg}
+                </Box>
+              )}
+            </Box>
             <Button
               type="submit"
               fullWidth
@@ -296,7 +367,7 @@ const SignUp = () => {
                 backgroundColor: "#9747FF",
                 color: "white",
               }}
-              disabled={!formik.isValid}
+              disabled={!formik.isValid }
             >
               Зарегистрироваться
             </Button>
