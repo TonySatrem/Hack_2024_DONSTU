@@ -3,10 +3,10 @@ import tables from "../enums/tables.js"
 
 const table = db.table(tables.question)
 
-export async function addQuestion({ fullName, email, text, teamId }) {
+export async function addQuestion({ fullName, email, text, participantId }) {
     return (await table
         .returning('questionId')
-        .insert({ fullName, email, text, teamId }))[0]
+        .insert({ fullName, email, text, participantId }))[0]
 }
 
 export async function getById({ questionId }) {
@@ -14,7 +14,8 @@ export async function getById({ questionId }) {
         .where({ questionId })[0])
 }
 
-export async function getAllQuestions() {
+export async function getAllQuestions({ participantId }) {
     return (await table
-        .select()) 
+        .select()
+        .where({ participantId })) 
 }

@@ -3,18 +3,25 @@ import tables from "../enums/tables.js"
 
 const table = db.table(tables.vote)
 
-export async function addVote({ teamId, voteType, count }) {
-    return (await table
+export async function addVote({ votingTeamId, voteType, count = 0}) {
+    return (await db.table(tables.vote)
         .returning('voteId')
-        .insert({ teamId, voteType, count }))[0]
+        .insert({ votingTeamId, voteType, count }))[0]
 }
 
-export async function getById({ voteId }) {
-    return (await table
+export async function getByVoteId({ voteId }) {
+    return (await db.table(tables.vote)
         .where({ voteId })[0])
 }
 
-export async function getAllVotes() {
-    return (await table
-        .select()) 
+export async function getByTeamId({ teamId }) {
+    return (await db.table(tables.vote)
+        .select()
+        .where({ teamId })) 
+}
+
+export async function getByVotingTeamId ({ votingTeamId }) {
+    return (await db.table(tables.vote) 
+        .select()
+        .where({ votingTeamId }))
 }

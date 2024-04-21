@@ -1,5 +1,5 @@
-import db from "./db.js"
-import tables from "./enums/tables.js"
+import db from "../db.js"
+import tables from "../enums/tables.js"
 
 const table = db.table(tables.team)
 

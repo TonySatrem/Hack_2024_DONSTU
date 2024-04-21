@@ -4,7 +4,8 @@ import cors from "cors"
 import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
 import * as dbTeam from "./db/models/dbTeam.js"
-import * as dbParticipant from "./db/dbParticipant.js"
+import * as dbParticipant from "./db/models/dbParticipant.js"
+import * as dbVote from "./db/models/dbVotes.js"
 
 const app = express()
 
@@ -60,21 +61,6 @@ app.get(clientEndpoints, (req, res) => {
 // API
 // teams
 
-app.get('/api/teams', async (req, res) => {
-  try {
-      const teams = await dbTeam.getAll()
-      res.send(teams)
-  }
-  catch (e) {
-      console.log(e)
-      res.sendStatus(400)
-      res.send(e.message)
-  } 
-  finally {
-      res.end()
-  }
-})
-
 app.post('/api/teams/add', async (req, res) => {
   try {
       const teamId = await dbTeam.addTeam(req.body)
@@ -90,15 +76,19 @@ app.post('/api/teams/add', async (req, res) => {
   }
 })
 
-app.route('/api/teams/:id(\d+)')
-.get(async (req, res) => {
-    const teamId = req.params
-    console.log(teamId)
-    console.log(typeof teamId)
+app.route('/api/teams')
+  .get(async (req, res) => {
+    const teamId = req.query.id
 
     try {
-        const team = await dbTeam.getById({ teamId })
+      if (!teamId) {
+        const teams = await dbTeam.getAll()
+        res.send(teams)
+      }
+      else {
+        const team = await dbTeam.getById({teamId})
         res.send(team)
+      }
     }
     catch (e) {
         console.log(e)
@@ -108,40 +98,40 @@ app.route('/api/teams/:id(\d+)')
     finally {
         res.end()
     }
-})
-.delete(async (req, res) => {
-    const teamId = req.params.id
-    
-    try {
-        dbTeam.deleteTeam({ teamId })
-        res.sendStatus(200)
-    }
-    catch (e) {
-        console.log(e)
-        res.sendStatus(400)
-        res.send(e.message)
-    } 
-    finally {
-        res.end()
-    }
-})
-.put(async (req, res) => {
-    const teamId = req.params.id
-    const { banner } = req.body
+  })
+  .delete(async (req, res) => {
+      const teamId = req.query.id
+      
+      try {
+          dbTeam.deleteTeam({ teamId })
+          res.sendStatus(200)
+      }
+      catch (e) {
+          console.log(e)
+          res.sendStatus(400)
+          res.send(e.message)
+      } 
+      finally {
+          res.end()
+      }
+  })
+  .put(async (req, res) => {
+      const teamId = req.query.id
+      const { banner } = req.body
 
-    try {
-        dbTeam.changeBanner({ teamId, banner })
-        res.sendStatus(200)
-    }
-    catch (e) {
-        console.log(e)
-        res.sendStatus(400)
-        res.send(e.message)
-    } 
-    finally {
-        res.end()
-    }
-})
+      try {
+          dbTeam.changeBanner({ teamId, banner })
+          res.sendStatus(200)
+      }
+      catch (e) {
+          console.log(e)
+          res.sendStatus(400)
+          res.send(e.message)
+      } 
+      finally {
+          res.end()
+      }
+  })
 
 app.post('/api/teams/auth', async (req, res) =>{
   const { login, password } = req.body
@@ -177,13 +167,20 @@ app.post('/api/participants/add', async (req, res) => {
   }
 })
 
-app.route('/api/participants/:id(\d+)')
+app.route('/api/participants')
     .get(async (req, res) => {
-        const participantId = req.params.id
+        const participantId = req.query.participantId
+        const teamId = req.query.teamId
     
         try {
-            const participant = await dbParticipant.getById({ participantId })
-            res.send(participant)
+          if (teamId) {
+            const participants = await dbParticipant.getAllByTeamId({ teamId })
+            res.send(participants)
+          }
+          else if (participantId){
+          const participant = await dbParticipant.getById({ participantId })
+          res.send(participant)
+          } 
         }
         catch (e) {
             console.log(e)
@@ -195,7 +192,7 @@ app.route('/api/participants/:id(\d+)')
         }
     })
     .delete(async (req, res) => {
-        const participantId = req.params.id
+        const participantId = req.query.participantId
     
         try {
             dbParticipant.deleteParticipant({ participantId })
@@ -211,7 +208,7 @@ app.route('/api/participants/:id(\d+)')
         }
     })
     .put(async (req, res) => {
-        const participantId = req.params.id
+        const participantId = req.query.participantId
         const { info, photo } = req.body
     
         try {
@@ -229,12 +226,36 @@ app.route('/api/participants/:id(\d+)')
         }
     })
 
-app.get('/api/participants/team/:teamId(\d+)', async (req, res) => {
-  const teamId = req.params.teamId
+
+// Votes
+
+app.get("/api/votes", async (req, res) => {
+  const teamId = req.query.teamId
+  const voteId = req.params.voteId
 
   try {
-      const participants = await dbParticipant.getAllByTeamId({ teamId })
-      res.send(participants)
+      if (teamId) {
+        const votes = await dbVote.getByTeamId({ teamId })
+        res.send(votes)
+      } 
+      else if (voteId) {
+        const vote = await dbParticipant.getById({ voteId })
+        res.send(vote)
+      }
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
+
+app.post("/api/votes/add", async (req, res) => {
+  try {
+    const a = await dbVote.addVote(req.body)
   }
   catch (e) {
       console.log(e)
