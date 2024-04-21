@@ -56,19 +56,19 @@ export default function RecipeReviewCard({ isOpen, togglePopup }) {
         <>
             <Card>
                 <CardContent>
-                    <Typography variant="h5">Team Name</Typography>
+                    <Typography sx={{ textAlign: 'center' }} variant="h5">Team Name</Typography>
                 </CardContent>
                 <CardMedia
                     component="img"
                     height="194"
-                    image="https://i.pravatar.cc/300?img=1"
+                    image="https://preview.redd.it/5gqcxtsn1mi11.jpg?width=640&crop=smart&auto=webp&s=b776bc0031874f6643d20f9f1965865b95adb174"
                     alt="Paella dish"
                     style={{ minWidth: 0 }}
                 />
 
                 <CardActions disableSpacing>
                     {/* Используем функцию togglePopup, чтобы открыть или закрыть попап */}
-                    <Button variant="contained" style={{backgroundColor:"#9747FF"}} onClick={handleOpen}>Оценить команду</Button>
+                    <Button  style={{backgroundColor:"#9747FF",width: '100%',color:"white"}} onClick={handleOpen}>Оценить команду</Button>
 
                     {/*<Button*/}
                     {/*    onClick={() => {*/}
