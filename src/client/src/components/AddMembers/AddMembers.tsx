@@ -78,17 +78,21 @@ export default function AddMembers() {
         const id = localStorage.getItem('teamId');
         // Выполняем любую логику перед отправкой формы, если необходимо
         setMembers([...members, values]);
+        console.log(JSON.stringify({
+            fullName: values.fio,
+            email: values.email,
+            teamId: id, // TODO: Получить из localStorage после регистрации команды
+            info: values.info,
+            photo: values.avatar,
+        }));
         const response = await axios.post(API_URL + PART_ADD, {
             fullName: values.fio,
             email: values.email,
             teamId: id, // TODO: Получить из localStorage после регистрации команды
             info: values.info,
-            photo: values.avatar, // TODO: Перенести в base64
+            photo: values.avatar // TODO: Перенести в base64
         });
         setFormSubmitted(true);
-
-
-
     };
 
     return (
@@ -157,6 +161,7 @@ export default function AddMembers() {
                                         >
                                             Загрузить аватар
                                             <input
+                                                name='avatar'
                                                 type="file"
                                                 hidden
                                                 onChange={(e) => {
