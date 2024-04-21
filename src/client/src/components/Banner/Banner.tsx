@@ -4,7 +4,10 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit'; 
 import Paper from '@mui/material/Paper';
+import { API_URL } from "../../api/apiConfig";
 
+
+const URL_TEAM = `/teams/${localStorage.getItem('teamId')}`;
 export default function Banner() {
     const [userData, setUserData] = useState({
         "id": 0,
@@ -20,10 +23,13 @@ export default function Banner() {
     });
 
     useEffect(() => {
+        console.log(API_URL + URL_TEAM);
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('/api/teams/1/'); // Выполняем GET запрос к эндпоинту /api/teams/1/
+                const response = await axios.get(API_URL + URL_TEAM); // Выполняем GET запрос к эндпоинту /api/teams/1/
                 setUserData(response.data); // Устанавливаем полученные данные в состояние
+                console.log('Ответ от сервера:', response);
+                console.log('userData:', userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
