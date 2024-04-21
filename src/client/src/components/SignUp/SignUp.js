@@ -29,6 +29,18 @@ window.addEventListener('beforeunload', () => {
 });
 
 const SignUp = () => {
+  useEffect(() => {
+    // Читаем токен аутентификации из переменной окружения
+    const token = process.env.REACT_APP_TOKEN;
+
+    // Создаем экземпляр Axios с заголовком аутентификации
+    const axiosInstance = axios.create({
+      baseURL: 'https://127.0.0.1:8080/api/',
+      headers: {
+        'Authorization': `${token}`
+      }});
+    });
+
   const [errMsg, setErrMsg] = React.useState('');
   const [membersAdded, setMembersAdded] = React.useState(false);
 
@@ -94,7 +106,7 @@ const SignUp = () => {
         // banner: base64String,
         banner: banner.name,
       }));
-      const response = await axios.post(API_URL + ADD_TEAM, {
+      const response = await axios.post( ADD_TEAM, {
         name: teamName,
         email,
         login,
