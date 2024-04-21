@@ -58,6 +58,10 @@ app.get(clientEndpoints, (req, res) => {
   }
 })
 
+
+// API
+// teams
+
 app.get('/api/teams', async (req, res) => {
   try {
       const teams = await dbTeam.getAll()
@@ -88,7 +92,7 @@ app.post('/api/teams/add', async (req, res) => {
   }
 })
 
-app.route('/api/teams/:id')
+app.route('/api/teams/:id(\d+)')
 .get(async (req, res) => {
     const teamId = req.params
     console.log(teamId)
@@ -141,11 +145,24 @@ app.route('/api/teams/:id')
     }
 })
 
-app.post('api/teams/auth', authHandler)
+app.post('/api/teams/auth', async (req, res) =>{
+  const { login, password } = req.body
 
-app.use('/api/participants', participantRouter)
+  try {
+      const team = await dbTeam.getIdByCredentials({ login, password })
+      res.send(team)
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
 
-app.get('/api/participants/team/:teamId', getParticipantsByTeamHandler)
+// participants
 
 app.post('/api/participants/add', async (req, res) => {
   try {
@@ -162,7 +179,7 @@ app.post('/api/participants/add', async (req, res) => {
   }
 })
 
-app.route('/api/participants/:id')
+app.route('/api/participants/:id(\d+)')
     .get(async (req, res) => {
         const participantId = req.params.id
     
@@ -213,6 +230,8 @@ app.route('/api/participants/:id')
             res.end()
         }
     })
+
+app.get('/api/participants/team/:teamId(\d+)', getParticipantsByTeamHandler)
 
 const PORT = process.env.HTTP_PORT || 8080
 const HOSTNAME = process.env.HTTP_HOSTNAME || '127.0.0.1'
