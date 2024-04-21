@@ -17,10 +17,8 @@ import Avatar from "@mui/material/Avatar";
 import CardContent from "@mui/material/CardContent";
 import EditIcon from "@mui/icons-material/Edit";
 
-const PART_ADD = '/partisians/add';
-const PART_EDIT = '/partisians/edit';
-const PART_DELETE = '/partisians/delete';
-const PART_QUESTION = '/partisians/question';
+const PART_ADD = '/participants/add';
+const PART = '/participants/;
 
 const style = {
     position: 'absolute' as 'absolute',
