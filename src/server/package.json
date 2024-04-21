@@ -8,6 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "prod": "pm2 start server.js --name server --node-args=\"-r dotenv/config\"",
     "dev": "nodemon -r dotenv/config server.js"
   },
   "author": "",
