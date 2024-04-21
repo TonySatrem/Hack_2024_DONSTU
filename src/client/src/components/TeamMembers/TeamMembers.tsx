@@ -18,7 +18,6 @@ import CardContent from "@mui/material/CardContent";
 import EditIcon from "@mui/icons-material/Edit";
 
 const PART_ADD = '/participants/add';
-const PART = '/participants/;
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -131,7 +130,7 @@ export default function TeamMembers() {
     
 
     const deleteUser = () => {
-        const response = axios.delete(API_URL + PART_DELETE, {
+        const response = axios.delete(API_URL, {
             data: {
                 id: Number(value)
             }
