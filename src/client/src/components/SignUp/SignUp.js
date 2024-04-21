@@ -18,10 +18,12 @@ import { PDFDocument } from 'pdf-lib';
 import Compress from 'compressorjs';
 import AddMembers from '../AddMembers/AddMembers';
 import { ConstructionOutlined } from "@mui/icons-material";
+import { useAuth } from "../../context/AuthContext"; 
 
 const ADD_TEAM = "/teams/add";
 
 const SignUp = () => {
+
   const navigate = useNavigate();
   const validationSchema = yup.object({
     teamName: yup
@@ -99,16 +101,21 @@ const SignUp = () => {
   
   const handleSubmit = async (values) => {
     try {
-      console.log("Данные: ", values);
       const { teamName, email, login, password, banner } = values;
-      console.log("Файл: ", banner);
-      const base64Data = await compressAndConvertToBase64(values.banner, values.banner.type); // Используем JPEG как формат изображения
-      const response = await axios.post(API_URL + ADD_TEAM, {
-        name:teamName,
+      // const base64Data = await compressAndConvertToBase64(values.banner, values.banner.type); // Используем JPEG как формат изображения
+      console.log(JSON.stringify({
+        name: teamName,
         email,
         login,
         password,
-        banner: base64Data,
+        banner: banner.name
+      }));
+      const response = await axios.post(API_URL + ADD_TEAM, {
+        name: teamName,
+        email,
+        login,
+        password,
+        banner: banner.name
       });
       console.log('Ответ от сервера:', response);
       localStorage.setItem('teamId', response.data.teamId); // TODO: После этого отправить участников команды из modal окна
@@ -122,11 +129,11 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      teamName: "",
+      name: "",
       login: "",
       password: "",
       email: "",
-      banner: null,
+      banner: "",
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
