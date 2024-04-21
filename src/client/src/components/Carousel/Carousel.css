@@ -1,0 +1,20 @@
+.slide {
+    margin:auto;
+}
+.skick-list {
+    width: 100vw;
+}
+.slick-slide {
+    transform: scale(0.8);
+    transition: all 0.4s ease-in-out;
+    padding: 40px 0;
+}
+
+.slick-slide Card {
+    transition: all 0.4s ease-in-out;
+    width: max-content;
+}
+
+.slick-center {
+    transform: scale(1.1); 
+}
