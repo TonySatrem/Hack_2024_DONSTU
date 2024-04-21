@@ -54,6 +54,10 @@ function Header({ toggleTheme }) {
         setAnchorElUser(null);
     };
 
+    useEffect(() => {
+        setIsDarkTheme(!isDarkTheme);
+    }, [toggleTheme]);
+
     // const toggleTheme = () => {
     //     setIsDarkTheme(!isDarkTheme);
     // };
@@ -118,6 +122,21 @@ function Header({ toggleTheme }) {
                     </Box>
 
                     <Box sx={{ flexGrow: 1 }} />
+                    
+                    <Button
+                        onClick={toggleTheme}
+                        color="inherit"
+                        sx={{
+                            display: "block",
+                            paddingY: 1.5,
+                            ":hover": { backgroundColor: "#7436C5", color: "white" },
+                            pt: 2,
+                        }}
+                    >
+                        {isDarkTheme ? <DarkModeIcon /> : <LightModeIcon />}
+                    </Button>
+
+
 
                     <Box sx={{ flexGrow: 0, m: 1 }} display="flex" alignItems="center">
                         {isAuthenticated ? (
@@ -170,17 +189,6 @@ function Header({ toggleTheme }) {
                             </Button>
                         )}
                     </Box>
-                    <Button
-                        onClick={toggleTheme}
-                        color="inherit"
-                        sx={{
-                            display: "block",
-                            paddingY: 1.5,
-                            ":hover": { backgroundColor: "#7436C5", color: "white" }
-                        }}
-                    >
-                        {isDarkTheme ? "🌞" : "🌚"}
-                    </Button>
                 </Toolbar>
             </Container>
         </AppBar>
