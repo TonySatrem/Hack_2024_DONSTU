@@ -17,10 +17,7 @@ import Avatar from "@mui/material/Avatar";
 import CardContent from "@mui/material/CardContent";
 import EditIcon from "@mui/icons-material/Edit";
 
-const PART_ADD = '/partisians/add';
-const PART_EDIT = '/partisians/edit';
-const PART_DELETE = '/partisians/delete';
-const PART_QUESTION = '/partisians/question';
+const PART_ADD = '/participants/add';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -133,7 +130,7 @@ export default function TeamMembers() {
     
 
     const deleteUser = () => {
-        const response = axios.delete(API_URL + PART_DELETE, {
+        const response = axios.delete(API_URL, {
             data: {
                 id: Number(value)
             }
@@ -141,6 +138,19 @@ export default function TeamMembers() {
         console.log('Ответ от сервера:', response);
         setUsers(users.filter(user => user.id !== Number(value)));
 };
+
+    const saveUser = () => {
+        // Find the user to edit and set isEditing flag to false
+        setUsers(users.map(user => {
+            if (user.id === Number(value)) {
+                return {
+                    ...user,
+                    isEditing: false // Set isEditing flag to false for the selected user
+                };
+            }
+            return user;
+        }));
+    };
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
@@ -207,6 +217,9 @@ export default function TeamMembers() {
                                 onChange={(e) => handleInputChange(e, 'photo')}
                                 margin="normal"
                             />
+                            <Button variant="contained" color="primary" onClick={saveUser}>
+                                Сохранить изменения
+                            </Button>
                         </>
                     ) : (
                         <Card style={{ width: "100%", margin: 'auto', marginTop: 16 }}>
