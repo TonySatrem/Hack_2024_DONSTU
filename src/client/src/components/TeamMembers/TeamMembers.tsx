@@ -142,6 +142,19 @@ export default function TeamMembers() {
         setUsers(users.filter(user => user.id !== Number(value)));
 };
 
+    const saveUser = () => {
+        // Find the user to edit and set isEditing flag to false
+        setUsers(users.map(user => {
+            if (user.id === Number(value)) {
+                return {
+                    ...user,
+                    isEditing: false // Set isEditing flag to false for the selected user
+                };
+            }
+            return user;
+        }));
+    };
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
         const newValue = event.target.value;
@@ -207,6 +220,9 @@ export default function TeamMembers() {
                                 onChange={(e) => handleInputChange(e, 'photo')}
                                 margin="normal"
                             />
+                            <Button variant="contained" color="primary" onClick={saveUser}>
+                                Сохранить изменения
+                            </Button>
                         </>
                     ) : (
                         <Card style={{ width: "100%", margin: 'auto', marginTop: 16 }}>
