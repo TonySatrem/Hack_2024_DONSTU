@@ -66,21 +66,32 @@ export default function AddMembers() {
 
     const handleSubmit = async (values: Member) => {
         const id = localStorage.getItem('teamId');
+        // let base64String = '';
+        // if (avatar) {
+        //     base64String = await getBase64(avatar);
+        // }
+        // Получаем текущий список участников из localStorage
+        // localStorage.setItem('members', JSON.stringify([...members, values]));
+        const storedMembersString = localStorage.getItem('members');
+        const currentMembers: Member[] = storedMembersString ? JSON.parse(storedMembersString) : [];
+        
+        // Добавляем новых участников к текущему списку
+        const updatedMembers = [...currentMembers, values];
 
-        let base64String = '';
-        if (avatar) {
-            base64String = await getBase64(avatar);
-        }
+        // Сохраняем обновленный список участников в localStorage
+        localStorage.setItem('members', JSON.stringify(updatedMembers));
 
-        const response = await axios.post(API_URL + PART_ADD, {
-            fullName: values.fullName,
-            email: values.email,
-            teamId: id,
-            info: values.info,
-            photo: base64String,
-        });
-        setMembers([...members, response.data]); // Добавляем нового участника к списку после успешной отправки на сервер
-        setFormSubmitted(true);
+        console.log(updatedMembers);
+        // const response = await axios.post(API_URL + PART_ADD, {
+        //     fullName: values.fullName,
+        //     email: values.email,
+        //     teamId: id,
+        //     info: values.info,
+        //     photo: avatar.name,
+        // });
+        // setMembers([...members, response.data]); // Добавляем нового участника к списку после успешной отправки на сервер
+        // setFormSubmitted(true);
+        setOpen(false);
     };
 
     const getBase64 = (file: File): Promise<string> => {

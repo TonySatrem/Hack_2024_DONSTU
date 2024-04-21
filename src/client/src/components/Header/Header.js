@@ -133,7 +133,7 @@ function Header({ toggleTheme }) {
                             pt: 2,
                         }}
                     >
-                        {isDarkTheme ? <DarkModeIcon /> : <LightModeIcon />}
+                        {isDarkTheme ? <LightModeIcon /> : <DarkModeIcon />}
                     </Button>
 
 
@@ -164,13 +164,13 @@ function Header({ toggleTheme }) {
                                 >
                                     {settings.map((setting) => (
                                         <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                                            <Typography component={Link} to={setting.path} textAlign="center" sx={{ textDecoration: "none", color: "black" }}>
+                                            <Typography component={Link} to={setting.path} textAlign="center" sx={{ textDecoration: "none", color:  isDarkTheme ? 'white' : 'black'  }}>
                                                 {setting.name}
                                             </Typography>
                                         </MenuItem>
                                     ))}
                                     <MenuItem onClick={handleLogout}>
-                                        <Typography textAlign="center" sx={{color: "black"}}>Выход</Typography>
+                                        <Typography textAlign="center" sx={{color:  isDarkTheme ? 'white' : 'black' }}>Выход</Typography>
                                     </MenuItem>
                                 </Menu>
                             </>
