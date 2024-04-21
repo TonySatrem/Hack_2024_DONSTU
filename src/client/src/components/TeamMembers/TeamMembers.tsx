@@ -9,6 +9,14 @@ import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Modal, TextField } from "@mui/material";
 
+import { API_URL } from '../../api/apiConfig';
+import axios from 'axios';
+
+const PART_ADD = '/partisians/add';
+const PART_EDIT = '/partisians/edit';
+const PART_DELETE = '/partisians/delete';
+const PART_QUESTION = '/partisians/question';
+
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -70,6 +78,7 @@ export default function TeamMembers() {
     const handleClose = () => setOpen(false);
 
     const addUser = () => {
+
         // Add a new user to the users array
         const newUser = {
             id: users.length + 1, // Generate id for new user
@@ -82,10 +91,19 @@ export default function TeamMembers() {
         };
         setUsers([...users, newUser]);
         setValue(String(newUser.id)); // Switch to the newly added user
-    };
 
+        const response = axios.post(API_URL + PART_ADD, {
+            fullName: newUser.fullName,
+            email: newUser.email,
+            teamId: 1, // TODO: Получить из localStorage после регистрации команды
+            info: newUser.info,
+            photo: newUser.photo, // TODO: Перенести в base64
+        });
+        console.log('Ответ от сервера:', response);
+        // Здесь можно добавить в локалсторидж айди команды
+    };
     const editUser = () => {
-        // Toggle edit mode for the selected user
+        // Find the user to edit and set isEditing flag to true
         setUsers(users.map(user => {
             if (user.id === Number(value)) {
                 return {
@@ -95,7 +113,30 @@ export default function TeamMembers() {
             }
             return user;
         }));
+    
+        // Find the edited user
+        const editedUser = users.find(user => user.id === Number(value));
+    
+        // // Send PUT request to update user data
+        // const response = axios.put(API_URL + PART_EDIT, {
+        //     id: editedUser.id,
+        //     photo: editedUser.photo, // Assuming photo is already in base64 format
+        //     info: editedUser.info,
+        // });
+        // console.log('Ответ от сервера:', response);
     };
+    
+
+    const deleteUser = () => {
+        const response = axios.delete(API_URL + PART_DELETE, {
+            data: {
+                id: Number(value)
+            }
+        });
+        console.log('Ответ от сервера:', response);
+        setUsers(users.filter(user => user.id !== Number(value)));
+};
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
         const newValue = event.target.value;

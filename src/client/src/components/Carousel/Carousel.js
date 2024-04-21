@@ -49,11 +49,13 @@ const Carousel = ({ cards }) => {
     const currentTime = new Date().getTime();
     const timeDiff = currentTime - lastClickTime;
     const newSpeed = timeDiff < 500 ? Math.max(100, lastAnimationSpeed / 2) : 800;
-    if ((timeDiff < 350) && (lastAnimationSpeed > 400) || newSpeed < 150) {
+    console.log(timeDiff, lastAnimationSpeed, newSpeed);
+    if ((timeDiff < 350) && (lastAnimationSpeed > 400) || newSpeed < 100) {
       return; // Игнорируем этот клик
     }
     setLastClickTime(currentTime);
     setLastAnimationSpeed(newSpeed);
+  
     sliderRef.current.slickPrev();
   };
 
