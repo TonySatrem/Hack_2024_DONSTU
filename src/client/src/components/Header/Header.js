@@ -54,6 +54,10 @@ function Header({ toggleTheme }) {
         setAnchorElUser(null);
     };
 
+    useEffect(() => {
+        setIsDarkTheme(!isDarkTheme);
+    }, [toggleTheme]);
+
     // const toggleTheme = () => {
     //     setIsDarkTheme(!isDarkTheme);
     // };
@@ -118,6 +122,18 @@ function Header({ toggleTheme }) {
                     </Box>
 
                     <Box sx={{ flexGrow: 1 }} />
+                    <Button
+                        onClick={toggleTheme}
+                        color="inherit"
+                        sx={{
+                            display: "block",
+                            paddingY: 1.5,
+                            ":hover": { backgroundColor: "#7436C5", color: "white" },
+                            pt: 2,
+                        }}
+                    >
+                        {isDarkTheme ? <DarkModeIcon /> : <LightModeIcon />}
+                    </Button>
 
                     <Box sx={{ flexGrow: 0, m: 1 }} display="flex" alignItems="center">
                         {isAuthenticated ? (
@@ -145,13 +161,13 @@ function Header({ toggleTheme }) {
                                 >
                                     {settings.map((setting) => (
                                         <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                                            <Typography component={Link} to={setting.path} textAlign="center" sx={{ textDecoration: "none", color: "black" }}>
+                                            <Typography component={Link} to={setting.path} textAlign="center" sx={{ textDecoration: "none", color: isDarkTheme ? 'white' : 'black' }}>
                                                 {setting.name}
                                             </Typography>
                                         </MenuItem>
                                     ))}
                                     <MenuItem onClick={handleLogout}>
-                                        <Typography textAlign="center" sx={{color: "black"}}>Выход</Typography>
+                                        <Typography textAlign="center" sx={{color: isDarkTheme ? 'white' : 'black'}}>Выход</Typography>
                                     </MenuItem>
                                 </Menu>
                             </>
@@ -170,17 +186,7 @@ function Header({ toggleTheme }) {
                             </Button>
                         )}
                     </Box>
-                    <Button
-                        onClick={toggleTheme}
-                        color="inherit"
-                        sx={{
-                            display: "block",
-                            paddingY: 1.5,
-                            ":hover": { backgroundColor: "#7436C5", color: "white" }
-                        }}
-                    >
-                        {isDarkTheme ? "🌞" : "🌚"}
-                    </Button>
+                    
                 </Toolbar>
             </Container>
         </AppBar>
