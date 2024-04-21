@@ -219,10 +219,10 @@ export default function TeamMembers() {
                                     />
                                 }
                                 title={<Typography variant="h5">{selectedUser.fullName}</Typography>}
-                                subheader={<Typography variant="subtitle1">{selectedUser.info}</Typography>}
+                                subheader={<Typography variant="subtitle1">{selectedUser.email}</Typography>}
                             />
                             <CardContent>
-                                <Typography variant="body1">{selectedUser.email}</Typography>
+                                <Typography variant="body1">{selectedUser.info}</Typography>
                             </CardContent>
                             {selectedUser.isEditing ? (
                                 <Button variant="contained" color="primary" onClick={() => setUsers(users.map(user => {
