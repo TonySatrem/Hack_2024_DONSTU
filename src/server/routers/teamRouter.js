@@ -18,6 +18,23 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/auth', async (req, res) => {
+    const { login, password } = req.body
+
+    try {
+        const team = await dbTeam.getIdByCredentials({ login, password })
+        res.send(team)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+
 router.post('/add', async (req, res) => {
     try {
         const teamId = await dbTeam.addTeam(req.body)

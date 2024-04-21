@@ -19,6 +19,11 @@ export async function getByLogin({ login }) {
         .where({ login }))[0]
 }
 
+export async function getIdByCredentials({ login, password }) {
+    return (await table
+        .where({ login, password }))[0]
+}
+
 export async function getAll() {
     return (await table
         .select())
