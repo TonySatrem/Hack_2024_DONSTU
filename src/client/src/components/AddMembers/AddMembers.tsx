@@ -38,7 +38,7 @@ interface Member {
 const MiniMemberCard = ({ member }: { member: Member }) => (
     <div style={{ marginBottom: '20px' }}>
         <Typography variant="body1" gutterBottom>
-            ФИО: {member.fio}
+            ФИО: {member.fullName}
         </Typography>
         <Typography variant="body1" gutterBottom>
             Email: {member.email}
@@ -62,37 +62,42 @@ export default function AddMembers() {
 
     const [members, setMembers] = React.useState<Member[]>([]);
     const [formSubmitted, setFormSubmitted] = React.useState(false);
-
-    const addMember = () => {
-        const newMember: Member = {
-            fullName: '',
-            email: '',
-            info: '',
-            teamId:0,
-            photo: '',
-        };
-        setMembers([...members, newMember]);
-    };
+    const [avatar, setAvatar] = React.useState<File | null>(null); // Состояние для хранения выбранного аватара
 
     const handleSubmit = async (values: Member) => {
         const id = localStorage.getItem('teamId');
-        // Выполняем любую логику перед отправкой формы, если необходимо
-        setMembers([...members, values]);
-        console.log(JSON.stringify({
-            fullName: values.fio,
-            email: values.email,
-            teamId: id, // TODO: Получить из localStorage после регистрации команды
-            info: values.info,
-            photo: values.avatar,
-        }));
+
+        let base64String = '';
+        if (avatar) {
+            base64String = await getBase64(avatar);
+        }
+
         const response = await axios.post(API_URL + PART_ADD, {
-            fullName: values.fio,
+            fullName: values.fullName,
             email: values.email,
-            teamId: id, // TODO: Получить из localStorage после регистрации команды
+            teamId: id,
             info: values.info,
-            photo: values.avatar // TODO: Перенести в base64
+            photo: base64String,
         });
+        setMembers([...members, response.data]); // Добавляем нового участника к списку после успешной отправки на сервер
         setFormSubmitted(true);
+    };
+
+    const getBase64 = (file: File): Promise<string> => {
+        return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    // Функция для обработки изменений в выборе файла аватара
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            setAvatar(file);
+        }
     };
 
     return (
@@ -106,7 +111,7 @@ export default function AddMembers() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ ...style, maxHeight: '80vh' }}> {/* добавляем стиль overflow и максимальную высоту */}
+                <Box sx={{ ...style, maxHeight: '80vh' }}>
                     <DialogContent dividers>
                         <Typography id="modal-modal-title" variant="h5" component="h2" align="center" gutterBottom>
                             Добавить участников
@@ -116,7 +121,7 @@ export default function AddMembers() {
                         ))}
                         {!formSubmitted && (
                             <Formik
-                                initialValues={{ fullName: '', email: '', info: '', photo: '',teamId:0 }}
+                                initialValues={{ fullName: '', email: '', info: '', teamId: 0, photo: '' }}
                                 onSubmit={handleSubmit}
                                 validationSchema={validationSchema}
                             >
@@ -131,7 +136,7 @@ export default function AddMembers() {
                                             margin="normal"
                                             as={TextField}
                                         />
-                                        <ErrorMessage name="fio" component="div" />
+                                        <ErrorMessage name="fullName" component="div" />
 
                                         <Field
                                             name="email"
@@ -161,13 +166,9 @@ export default function AddMembers() {
                                         >
                                             Загрузить аватар
                                             <input
-                                                name='avatar'
                                                 type="file"
                                                 hidden
-                                                onChange={(e) => {
-                                                    const file = e.target.files && e.target.files[0];
-                                                    // Обработка загрузки аватара
-                                                }}
+                                                onChange={handleAvatarChange} // Привязываем функцию к событию onChange
                                             />
                                         </Button>
 
