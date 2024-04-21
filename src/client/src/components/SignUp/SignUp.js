@@ -29,17 +29,17 @@ window.addEventListener('beforeunload', () => {
 });
 
 const SignUp = () => {
-  useEffect(() => {
-    // Читаем токен аутентификации из переменной окружения
-    const token = process.env.REACT_APP_TOKEN;
+  // useEffect(() => {
+  //   // Читаем токен аутентификации из переменной окружения
+  //   const token = process.env.REACT_APP_TOKEN;
 
-    // Создаем экземпляр Axios с заголовком аутентификации
-    const axiosInstance = axios.create({
-      baseURL: 'https://127.0.0.1:8080/api/',
-      headers: {
-        'Authorization': `${token}`
-      }});
-    });
+  //   // Создаем экземпляр Axios с заголовком аутентификации
+  //   const axiosInstance = axios.create({
+  //     baseURL: 'https://127.0.0.1:8080/api/',
+  //     headers: {
+  //       'Authorization': `${token}`
+  //     }});
+  //   });
 
   const [errMsg, setErrMsg] = React.useState('');
   const [membersAdded, setMembersAdded] = React.useState(false);
