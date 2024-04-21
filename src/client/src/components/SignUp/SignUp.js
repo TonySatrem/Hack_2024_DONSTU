@@ -351,14 +351,12 @@ const SignUp = () => {
                 alignItems: "center",
               }}  
             >
-              <AddMembers onBlur={handleAddMembers} />
               {errMsg && (
                 <Box sx={{ color: "red", marginLeft: 1, fontSize: "12px" }}>
                   {errMsg}
                 </Box>
               )}
             </Box>
-
             <Button
               type="submit"
               fullWidth
@@ -369,7 +367,7 @@ const SignUp = () => {
                 backgroundColor: "#9747FF",
                 color: "white",
               }}
-              disabled={!formik.isValid || !membersAdded}
+              disabled={!formik.isValid }
             >
               Зарегистрироваться
             </Button>
