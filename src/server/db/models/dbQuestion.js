@@ -1,20 +1,20 @@
 import db from "../db.js"
 import tables from "../enums/tables.js"
 
-const table = db.table(tables.question)
 
-export async function addQuestion({ fullName, email, text, teamId }) {
-    return (await table
+export async function addQuestion({ fullName, email, text, participantId }) {
+    return (await db.table(tables.question)
         .returning('questionId')
-        .insert({ fullName, email, text, teamId }))[0]
+        .insert({ fullName, email, text, participantId }))[0]
 }
 
 export async function getById({ questionId }) {
-    return (await table
+    return (await db.table(tables.question)
         .where({ questionId })[0])
 }
 
-export async function getAllQuestions() {
-    return (await table
-        .select()) 
+export async function getAllQuestions({ participantId }) {
+    return (await db.table(tables.question)
+        .select()
+        .where({ participantId })) 
 }
