@@ -5,8 +5,6 @@ import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
 import * as dbTeam from "./db/dbTeam.js"
 import * as dbParticipant from "./db/dbParticipant.js"
-import getParticipantsByTeamHandler from "./routers/getParticipantsByTeamHandler.js"
-import authHandler from "./routers/authHandler.js"
 
 const app = express()
 
@@ -231,7 +229,22 @@ app.route('/api/participants/:id(\d+)')
         }
     })
 
-app.get('/api/participants/team/:teamId(\d+)', getParticipantsByTeamHandler)
+app.get('/api/participants/team/:teamId(\d+)', async (req, res) => {
+  const teamId = req.params.teamId
+
+  try {
+      const participants = await dbParticipant.getAllByTeamId({ teamId })
+      res.send(participants)
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
 
 const PORT = process.env.HTTP_PORT || 8080
 const HOSTNAME = process.env.HTTP_HOSTNAME || '127.0.0.1'
