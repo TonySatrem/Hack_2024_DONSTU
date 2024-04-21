@@ -1,12 +1,12 @@
 import express from "express"
-import * as dbTeam from "../db/dbTeam.js"
+import * as dbParticipant from "../db/dbParticipant.js"
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
-        const teams = await dbTeam.getAll()
-        res.send(teams)
+        const participantId = await dbParticipant.addParticipant(req.body)
+        res.send(participantId)
     }
     catch (e) {
         console.log(e)
@@ -18,11 +18,13 @@ router.get('/', async (req, res) => {
     }
 })
 
-
-router.post('/add', async (req, res) => {
+router.get('/team', async (req, res) => {
+    res.send('alfj')
+    const teamId = req.params.teamId
+    
     try {
-        const teamId = await dbTeam.addTeam(req.body)
-        res.send(teamId)
+        const participants = await dbParticipant.getAllByTeamId({ teamId })
+        res.send(participants)
     }
     catch (e) {
         console.log(e)
@@ -35,11 +37,11 @@ router.post('/add', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-    const teamId = req.params.id
+    const participantId = req.params.id
 
     try {
-        const team = await dbTeam.getById({ teamId })
-        res.send(team)
+        const participant = await dbParticipant.getById({ participantId })
+        res.send(participant)
     }
     catch (e) {
         console.log(e)
@@ -52,10 +54,10 @@ router.get('/:id', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
-    const teamId = req.params.id
-    
+    const participantId = req.params.id
+
     try {
-        dbTeam.deleteTeam({ teamId })
+        dbParticipant.deleteParticipant({ participantId })
         res.sendStatus(200)
     }
     catch (e) {
@@ -69,11 +71,12 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-    const teamId = req.params.id
-    const { banner } = req.body
+    const participantId = req.params.id
+    const { info, photo } = req.body
 
     try {
-        dbTeam.changeBanner({ teamId, banner })
+        if (!!info) await dbParticipant.changeInfo({ participantId, info})
+        if (!!photo) await dbParticipant.changePhoto({ participantId, photo})
         res.sendStatus(200)
     }
     catch (e) {

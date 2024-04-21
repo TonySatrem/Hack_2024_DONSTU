@@ -3,6 +3,9 @@ import cors from "cors"
 import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
 import teamRouter from "./routers/teamRouter.js"
+import participantRouter from "./routers/participantRouter.js"
+import getParticipantsByTeamHandler from "./routers/getParticipantsByTeamHandler.js"
+import authHandler from "./routers/authHandler.js"
 
 const app = express()
 
@@ -52,6 +55,12 @@ app.get(clientEndpoints, (req, res) => {
 })
 
 app.use('/api/teams', teamRouter)
+
+app.post('api/teams/auth', authHandler)
+
+app.use('/api/participants', participantRouter)
+
+app.get('/api/participants/team/:teamId', getParticipantsByTeamHandler)
 
 const PORT = process.env.HTTP_PORT || 8080
 const HOSTNAME = process.env.HTTP_HOSTNAME || '127.0.0.1'

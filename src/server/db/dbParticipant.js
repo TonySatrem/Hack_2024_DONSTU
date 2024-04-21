@@ -4,29 +4,37 @@ import tables from "./enums/tables.js"
 const table = db.table(tables.participant)
 
 export async function addParticipant({ fullName, teamId, info, photo, email }) {
-    await table 
-        .insert({ fullName, teamId, info, photo, email })
+    return (await table 
+        .returning('participantId')
+        .insert({ fullName, teamId, info, photo, email }))[0]
 }
 
-export async function getById({ id }) {
+export async function getAllByTeamId({ teamId }) {
+    return await table
+        .select('participantId')
+        .where({ teamId })
+        .then(r => r.map(i => i.participantId))
+}
+
+export async function getById({ participantId }) {
     return (await table
-        .where({ id }))[0]
+        .where({ participantId }))[0]
 }
 
-export async function deleteParticipant({ id }) {
+export async function deleteParticipant({ participantId }) {
     await table
-        .where({ id })
+        .where({ participantId })
         .del()
 }
 
-export async function changePhoto({ id, photo }) {
+export async function changePhoto({ participantId, photo }) {
     await table
-        .where({ id })
+        .where({ participantId })
         .update({ photo })
 }
 
-export async function changeInfo({ id, info }) {
+export async function changeInfo({ participantId, info }) {
     await table
-        .where({ id })
+        .where({ participantId })
         .update({ info })
 }
