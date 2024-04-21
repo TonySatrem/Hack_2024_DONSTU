@@ -3,14 +3,15 @@ import tables from "./enums/tables.js"
 
 const table = db.table(tables.team)
 
-export async function addTeam({ name, email, login, password, banner}) {
-    await table
-        .insert({ name, email, login, password, banner})
+export async function addTeam({ name, email, login, password, banner }) {
+    return (await table
+        .returning('teamId')
+        .insert({ name, email, login, password, banner }))[0]
 }
 
-export async function getById({ id }) {
+export async function getById({ teamId }) {
     return (await table
-        .where({ id }))[0]
+        .where({ teamId }))[0]
 }
 
 export async function getByLogin({ login }) {
@@ -18,15 +19,24 @@ export async function getByLogin({ login }) {
         .where({ login }))[0]
 }
 
-export async function deleteTeam({ id }) {
+export async function getIdByCredentials({ login, password }) {
+    return (await table
+        .where({ login, password }))[0]
+}
+
+export async function getAll() {
+    return (await table
+        .select())
+}
+
+export async function deleteTeam({ teamId }) {
     await table
-        .where({ id })
+        .where({ teamId })
         .del()
 }
 
-export async function changeBanner({ id, banner }) {
+export async function changeBanner({ teamId, banner }) {
     await table
-        .where({ id })
+        .where({ teamId })
         .update({ banner })
 }
-

@@ -8,6 +8,7 @@ import {Container, Rating} from "@mui/material";
 import { Popup } from "../../components/Popup/Popup";
 import RatingPopup from "../../components/RatingPopup/RatingPopup";
 import CssBaseline from "@mui/material/CssBaseline";
+import Converter from "../../components/Converter/Converter";
 
 
 
