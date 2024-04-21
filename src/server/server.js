@@ -3,7 +3,7 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
-import * as dbTeam from "./db/dbTeam.js"
+import * as dbTeam from "./db/models/dbTeam.js"
 import * as dbParticipant from "./db/dbParticipant.js"
 
 const app = express()
