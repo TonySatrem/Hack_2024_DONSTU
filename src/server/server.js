@@ -1,17 +1,21 @@
 import express from "express"
+import bodyParser from "body-parser"
 import cors from "cors"
 import { getFile } from "./lib/getFile.js"
 import getContentType from "./lib/getContentType.js"
-import teamRouter from "./routers/teamRouter.js"
-import participantRouter from "./routers/participantRouter.js"
+import * as dbTeam from "./db/dbTeam.js"
+import * as dbParticipant from "./db/dbParticipant.js"
 import getParticipantsByTeamHandler from "./routers/getParticipantsByTeamHandler.js"
 import authHandler from "./routers/authHandler.js"
 
 const app = express()
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(express.json({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
+
 app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded())
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
@@ -54,13 +58,161 @@ app.get(clientEndpoints, (req, res) => {
   }
 })
 
-app.use('/api/teams', teamRouter)
+app.get('/api/teams', async (req, res) => {
+  try {
+      const teams = await dbTeam.getAll()
+      res.send(teams)
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
+
+app.post('/api/teams/add', async (req, res) => {
+  try {
+      const teamId = await dbTeam.addTeam(req.body)
+      res.send(teamId)
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
+
+app.route('/api/teams/:id')
+.get(async (req, res) => {
+    const teamId = req.params
+    console.log(teamId)
+    console.log(typeof teamId)
+
+    try {
+        const team = await dbTeam.getById({ teamId })
+        res.send(team)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+.delete(async (req, res) => {
+    const teamId = req.params.id
+    
+    try {
+        dbTeam.deleteTeam({ teamId })
+        res.sendStatus(200)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
+.put(async (req, res) => {
+    const teamId = req.params.id
+    const { banner } = req.body
+
+    try {
+        dbTeam.changeBanner({ teamId, banner })
+        res.sendStatus(200)
+    }
+    catch (e) {
+        console.log(e)
+        res.sendStatus(400)
+        res.send(e.message)
+    } 
+    finally {
+        res.end()
+    }
+})
 
 app.post('api/teams/auth', authHandler)
 
 app.use('/api/participants', participantRouter)
 
 app.get('/api/participants/team/:teamId', getParticipantsByTeamHandler)
+
+app.post('/api/participants/add', async (req, res) => {
+  try {
+      const participantId = await dbParticipant.addParticipant(req.body)
+      res.send(participantId)
+  }
+  catch (e) {
+      console.log(e)
+      res.sendStatus(400)
+      res.send(e.message)
+  } 
+  finally {
+      res.end()
+  }
+})
+
+app.route('/api/participants/:id')
+    .get(async (req, res) => {
+        const participantId = req.params.id
+    
+        try {
+            const participant = await dbParticipant.getById({ participantId })
+            res.send(participant)
+        }
+        catch (e) {
+            console.log(e)
+            res.sendStatus(400)
+            res.send(e.message)
+        } 
+        finally {
+            res.end()
+        }
+    })
+    .delete(async (req, res) => {
+        const participantId = req.params.id
+    
+        try {
+            dbParticipant.deleteParticipant({ participantId })
+            res.sendStatus(200)
+        }
+        catch (e) {
+            console.log(e)
+            res.sendStatus(400)
+            res.send(e.message)
+        } 
+        finally {
+            res.end()
+        }
+    })
+    .put(async (req, res) => {
+        const participantId = req.params.id
+        const { info, photo } = req.body
+    
+        try {
+            if (!!info) await dbParticipant.changeInfo({ participantId, info})
+            if (!!photo) await dbParticipant.changePhoto({ participantId, photo})
+            res.sendStatus(200)
+        }
+        catch (e) {
+            console.log(e)
+            res.sendStatus(400)
+            res.send(e.message)
+        } 
+        finally {
+            res.end()
+        }
+    })
 
 const PORT = process.env.HTTP_PORT || 8080
 const HOSTNAME = process.env.HTTP_HOSTNAME || '127.0.0.1'

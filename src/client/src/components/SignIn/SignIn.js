@@ -11,18 +11,28 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { API_URL } from "../../api/apiConfig";
+import axios from "axios";
+
+const URL_LOGIN = "/teams/auth";
 
 export default function SignIn() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("login"),
-      password: data.get("password"),
-    });
+    const login = event.target.login.value;
+    const password = event.target.password.value;
+    console.log(JSON.stringify({
+      login,
+      password
+    }));
+    const response = await axios.post(API_URL + URL_LOGIN, {
+      login,
+      password,
+    })
+    localStorage.setItem('team', response.data);
     login();
     navigate('/personal');
   };
@@ -84,13 +94,6 @@ export default function SignIn() {
               autoComplete="current-password"
             />
             
-            {/* <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Запомнить меня"
-              sx={{ color: '#9747FF' }}
-            />
-            </Box> */}
             <Button
               type="submit"
               fullWidth
