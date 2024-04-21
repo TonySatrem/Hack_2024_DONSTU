@@ -7,6 +7,10 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
+import { API_URL } from '../../api/apiConfig';
+import axios from 'axios';
+
+const PART_ADD = '/partisians/add';
 
 const style = {
     position: 'absolute' as const,
@@ -48,7 +52,7 @@ const MiniMemberCard = ({ member }: { member: Member }) => (
 const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email('Неправильный формат email')
-        .required('Пожалуйста, введите адрес электронной почты'),
+        .required('Email обязателен для заполнения'),
 });
 
 export default function AddMembers() {
@@ -70,10 +74,21 @@ export default function AddMembers() {
         setMembers([...members, newMember]);
     };
 
-    const handleSubmit = (values: Member) => {
+    const handleSubmit = async (values: Member) => {
+        const id = localStorage.getItem('teamId');
         // Выполняем любую логику перед отправкой формы, если необходимо
         setMembers([...members, values]);
+        const response = await axios.post(API_URL + PART_ADD, {
+            fullName: values.fio,
+            email: values.email,
+            teamId: id, // TODO: Получить из localStorage после регистрации команды
+            info: values.info,
+            photo: values.avatar, // TODO: Перенести в base64
+        });
         setFormSubmitted(true);
+
+
+
     };
 
     return (

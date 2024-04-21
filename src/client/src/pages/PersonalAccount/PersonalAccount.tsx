@@ -10,10 +10,6 @@ export default function PersonalAccount() {
         <>
             <CssBaseline/>
             <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
 
             <Banner/>
             <br/>

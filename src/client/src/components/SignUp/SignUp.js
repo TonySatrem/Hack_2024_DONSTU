@@ -111,6 +111,8 @@ const SignUp = () => {
         banner: base64Data,
       });
       console.log('Ответ от сервера:', response);
+      localStorage.setItem('teamId', response.data.teamId); // TODO: После этого отправить участников команды из modal окна
+      
     } catch (error) {
       console.error('Ошибка при отправке данных:', error);
       throw error;

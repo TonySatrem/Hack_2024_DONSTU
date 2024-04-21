@@ -7,25 +7,28 @@ import Button from "@mui/material/Button";
 import Popup from "../Popup/Popup";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Modal, TextField} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Avatar from "@mui/material/Avatar";
-import CardContent from "@mui/material/CardContent";
+import { Modal, TextField } from "@mui/material";
+
+import { API_URL } from '../../api/apiConfig';
+import axios from 'axios';
+
+const PART_ADD = '/partisians/add';
+const PART_EDIT = '/partisians/edit';
+const PART_DELETE = '/partisians/delete';
+const PART_QUESTION = '/partisians/question';
 
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
+    width: 200,
     bgcolor: 'background.paper',
     border: '1px solid white',
     borderRadius: 5,
     boxShadow: 24,
     p: 4,
 };
-
 
 export default function TeamMembers() {
     const [value, setValue] = React.useState('one');
@@ -35,7 +38,7 @@ export default function TeamMembers() {
         {
             id: 1,
             fullName: 'Дарья',
-            info: '1c специалист',
+            info: 'Менеджер',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -44,7 +47,7 @@ export default function TeamMembers() {
         {
             id: 2,
             fullName: 'Дарья',
-            info: '1c специалист',
+            info: 'Менеджер',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -53,7 +56,7 @@ export default function TeamMembers() {
         {
             id: 3,
             fullName: 'Дарья',
-            info: '1c специалист',
+            info: 'Менеджер',
             email: 'qPp2A@example.com',
             teamId: 1,
             photo: 'https://sun9-79.userapi.com/impg/zSczkVtGYoJFLJgRJ6YUYkRDWGDeuU5B_xrAPQ/F4j9Bhy0_xg.jpg?size=640x640&quality=96&sign=69ed89f22492facac0347824f89b48b8&type=album',
@@ -75,24 +78,32 @@ export default function TeamMembers() {
     const handleClose = () => setOpen(false);
 
     const addUser = () => {
-        if (users.length < 6) { // Проверяем, что количество пользователей меньше 6
-            // Добавляем нового пользователя в массив пользователей
-            const newUser = {
-                id: users.length + 1, // Генерируем id для нового пользователя
-                fullName: 'Новый пользователь',
-                info: '',
-                email: '',
-                teamId: 1,
-                photo: 'https://www.example.com/default-photo.jpg', // Можно установить фото по умолчанию
-                isEditing: false,
-            };
-            setUsers([...users, newUser]);
-            setValue(String(newUser.id)); // Переключаемся на только что добавленного пользователя
-        }
-    };
 
+        // Add a new user to the users array
+        const newUser = {
+            id: users.length + 1, // Generate id for new user
+            fullName: 'Новый пользователь',
+            info: '',
+            email: '',
+            teamId: 1,
+            photo: 'https://www.example.com/default-photo.jpg', // You can set a default photo
+            isEditing: false,
+        };
+        setUsers([...users, newUser]);
+        setValue(String(newUser.id)); // Switch to the newly added user
+
+        const response = axios.post(API_URL + PART_ADD, {
+            fullName: newUser.fullName,
+            email: newUser.email,
+            teamId: 1, // TODO: Получить из localStorage после регистрации команды
+            info: newUser.info,
+            photo: newUser.photo, // TODO: Перенести в base64
+        });
+        console.log('Ответ от сервера:', response);
+        // Здесь можно добавить в локалсторидж айди команды
+    };
     const editUser = () => {
-        // Toggle edit mode for the selected user
+        // Find the user to edit and set isEditing flag to true
         setUsers(users.map(user => {
             if (user.id === Number(value)) {
                 return {
@@ -102,7 +113,30 @@ export default function TeamMembers() {
             }
             return user;
         }));
+    
+        // Find the edited user
+        const editedUser = users.find(user => user.id === Number(value));
+    
+        // // Send PUT request to update user data
+        // const response = axios.put(API_URL + PART_EDIT, {
+        //     id: editedUser.id,
+        //     photo: editedUser.photo, // Assuming photo is already in base64 format
+        //     info: editedUser.info,
+        // });
+        // console.log('Ответ от сервера:', response);
     };
+    
+
+    const deleteUser = () => {
+        const response = axios.delete(API_URL + PART_DELETE, {
+            data: {
+                id: Number(value)
+            }
+        });
+        console.log('Ответ от сервера:', response);
+        setUsers(users.filter(user => user.id !== Number(value)));
+};
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
         const newValue = event.target.value;
@@ -124,19 +158,8 @@ export default function TeamMembers() {
             borderRadius: 2,
             p: 2,
             minWidth: 300,
-            '@media (max-width:600px)': {
-                // Adjust styles for screens smaller than 600px
-                minWidth: '100%',
-                p: 1,
-            },
-            '@media (min-width:601px) and (max-width:960px)': {
-                // Adjust styles for screens between 601px and 960px
-                minWidth: 500,
-                p: 2,
-            },
         }}>
-
-        <Box sx={{ width: '100%' }}>
+            <Box sx={{ width: '100%' }}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -166,7 +189,7 @@ export default function TeamMembers() {
                                 margin="normal"
                             />
                             <TextField
-                                label="Email"
+                                label="Информация"
                                 value={selectedUser.email}
                                 onChange={(e) => handleInputChange(e, 'email')}
                                 margin="normal"
@@ -179,22 +202,14 @@ export default function TeamMembers() {
                             />
                         </>
                     ) : (
-                        <Card style={{ maxWidth: 500, margin: 'auto', marginTop: 16 }}>
-                            <CardHeader
-                                avatar={
-                                    <Avatar
-                                        alt={selectedUser.fullName}
-                                        src={selectedUser.photo}
-                                        style={{ width: 70, height: 70 }}
-                                    />
-                                }
-                                title={<Typography variant="h5">{selectedUser.fullName}</Typography>}
-                                subheader={<Typography variant="subtitle1">{selectedUser.info}</Typography>}
-                            />
-                            <CardContent>
-                                <Typography variant="body1">{selectedUser.email}</Typography>
-                            </CardContent>
-                        </Card>
+                        <>
+                            <h3>{selectedUser.fullName}</h3>
+                            <h3>{selectedUser.info}</h3>
+                            <h3>{selectedUser.email}</h3>
+
+                            <img style={{maxWidth: '500px', maxHeight: '500px'}} src={selectedUser.photo}
+                                 alt={selectedUser.fullName}/>
+                        </>
                     )}
                     <br/>
                     {selectedUser.isEditing ? (
@@ -223,16 +238,15 @@ export default function TeamMembers() {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <TextField style={{ width: '100%' }} id="filled-basic" label="Ваше ФИО" variant="filled" margin="normal" />
-                            <TextField style={{ width: '100%' }} id="filled-basic" label="Email" variant="filled" margin="normal" />
+                            <TextField id="filled-basic" label="Ваше ФИО" variant="filled" margin="normal" />
+                            <TextField id="filled-basic" label="Email" variant="filled" margin="normal" />
                             <TextField
                                 placeholder="Ваш вопрос"
                                 multiline
                                 rows={2}
                                 margin='normal'
-                                style={{ width: '100%' }}
                             />
-                            <Button  style={{ backgroundColor: "#9747FF",width: '100%' }} variant="contained">Отправить</Button>
+                            <Button style={{ backgroundColor: "#9747FF" }} variant="contained">Отправить</Button>
                         </Box>
                     </Modal>
                 </Box>
